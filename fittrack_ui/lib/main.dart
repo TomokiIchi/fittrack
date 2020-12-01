@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fit_kit/fit_kit.dart';
 
 void main() {
   runApp(MyApp());
@@ -109,5 +110,33 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
+  }
+}
+
+void read() async {
+  try {
+    final results = await FitKit.read(
+      DataType.HEART_RATE,
+      dateFrom: DateTime.now().subtract(Duration(days: 5)),
+      dateTo: DateTime.now(),
+    );
+  } on UnsupportedException catch (e) {
+    // thrown in case e.dataType is unsupported
+  }
+}
+
+void readLast() async {
+  final result = await FitKit.readLast(DataType.HEIGHT);
+}
+
+void readAll() async {
+  if (await FitKit.requestPermissions(DataType.values)) {
+    for (DataType type in DataType.values) {
+      final results = await FitKit.read(
+        type,
+        dateFrom: DateTime.now().subtract(Duration(days: 5)),
+        dateTo: DateTime.now(),
+      );
+    }
   }
 }

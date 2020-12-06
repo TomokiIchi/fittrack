@@ -1,142 +1,225 @@
-import 'package:flutter/material.dart';
+import 'dart:async';
 import 'package:fit_kit/fit_kit.dart';
+import 'package:flutter/material.dart';
 
-void main() {
-  runApp(MyApp());
+void main() => runApp(MyApp());
+
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => _MyAppState();
 }
 
-class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
+class _MyAppState extends State<MyApp> {
+  String result = '';
+  Map<DataType, List<FitData>> results = Map();
+  bool permissions;
+
+  RangeValues _dateRange = RangeValues(1, 8);
+  List<DateTime> _dates = List<DateTime>();
+  double _limitRange = 0;
+
+  DateTime get _dateFrom => _dates[_dateRange.start.round()];
+  DateTime get _dateTo => _dates[_dateRange.end.round()];
+  int get _limit => _limitRange == 0.0 ? null : _limitRange.round();
+
+  @override
+  void initState() {
+    super.initState();
+
+    final now = DateTime.now();
+    _dates.add(null);
+    for (int i = 7; i >= 0; i--) {
+      _dates.add(DateTime(
+        now.year,
+        now.month,
+        now.day,
+      ).subtract(Duration(days: i)));
+    }
+    _dates.add(null);
+
+    hasPermissions();
+  }
+
+  Future<void> read() async {
+    results.clear();
+
+    try {
+      permissions = await FitKit.requestPermissions(DataType.values);
+      if (!permissions) {
+        result = 'requestPermissions: failed';
+      } else {
+        for (DataType type in DataType.values) {
+          try {
+            results[type] = await FitKit.read(
+              type,
+              dateFrom: _dateFrom,
+              dateTo: _dateTo,
+              limit: _limit,
+            );
+          } on UnsupportedException catch (e) {
+            results[e.dataType] = [];
+          }
+        }
+
+        result = 'readAll: success';
+      }
+    } catch (e) {
+      result = 'readAll: $e';
+    }
+
+    setState(() {});
+  }
+
+  Future<void> revokePermissions() async {
+    results.clear();
+
+    try {
+      await FitKit.revokePermissions();
+      permissions = await FitKit.hasPermissions(DataType.values);
+      result = 'revokePermissions: success';
+    } catch (e) {
+      result = 'revokePermissions: $e';
+    }
+
+    setState(() {});
+  }
+
+  Future<void> hasPermissions() async {
+    try {
+      permissions = await FitKit.hasPermissions(DataType.values);
+    } catch (e) {
+      result = 'hasPermissions: $e';
+    }
+
+    if (!mounted) return;
+
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
+    final items =
+        results.entries.expand((entry) => [entry.key, ...entry.value]).toList();
+
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
-        primarySwatch: Colors.blue,
-      ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
-    );
-  }
-}
+      home: Scaffold(
+        appBar: AppBar(
+          title: Text('FitKit Example'),
+        ),
+        body: Container(
+          padding: EdgeInsets.symmetric(horizontal: 16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(padding: EdgeInsets.symmetric(vertical: 8)),
+              Text(
+                  'Date Range: ${_dateToString(_dateFrom)} - ${_dateToString(_dateTo)}'),
+              Text('Limit: $_limit'),
+              Text('Permissions: $permissions'),
+              Text('Result: $result'),
+              _buildDateSlider(context),
+              _buildLimitSlider(context),
+              _buildButtons(context),
+              Expanded(
+                child: ListView.builder(
+                  itemCount: items.length,
+                  itemBuilder: (context, index) {
+                    final item = items[index];
+                    if (item is DataType) {
+                      return Padding(
+                        padding: EdgeInsets.symmetric(vertical: 8),
+                        child: Text(
+                          '$item - ${results[item].length}',
+                          style: Theme.of(context).textTheme.title,
+                        ),
+                      );
+                    } else if (item is FitData) {
+                      return Padding(
+                        padding: EdgeInsets.symmetric(
+                          vertical: 4,
+                          horizontal: 8,
+                        ),
+                        child: Text(
+                          '$item',
+                          style: Theme.of(context).textTheme.caption,
+                        ),
+                      );
+                    }
 
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
-  final String title;
-
-  @override
-  _MyHomePageState createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
-    return Scaffold(
-      appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
-      ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-          ],
+                    return Container();
+                  },
+                ),
+              ),
+            ],
+          ),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
-}
 
-void read() async {
-  try {
-    final results = await FitKit.read(
-      DataType.HEART_RATE,
-      dateFrom: DateTime.now().subtract(Duration(days: 5)),
-      dateTo: DateTime.now(),
-    );
-  } on UnsupportedException catch (e) {
-    // thrown in case e.dataType is unsupported
-  }
-}
-
-void readLast() async {
-  final result = await FitKit.readLast(DataType.HEIGHT);
-}
-
-void readAll() async {
-  if (await FitKit.requestPermissions(DataType.values)) {
-    for (DataType type in DataType.values) {
-      final results = await FitKit.read(
-        type,
-        dateFrom: DateTime.now().subtract(Duration(days: 5)),
-        dateTo: DateTime.now(),
-      );
+  String _dateToString(DateTime dateTime) {
+    if (dateTime == null) {
+      return 'null';
     }
+
+    return '${dateTime.day}.${dateTime.month}.${dateTime.year}';
+  }
+
+  Widget _buildDateSlider(BuildContext context) {
+    return Row(
+      children: [
+        Text('Date Range'),
+        Expanded(
+          child: RangeSlider(
+            values: _dateRange,
+            min: 0,
+            max: 9,
+            divisions: 10,
+            onChanged: (values) => setState(() => _dateRange = values),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildLimitSlider(BuildContext context) {
+    return Row(
+      children: [
+        Text('Limit'),
+        Expanded(
+          child: Slider(
+            value: _limitRange,
+            min: 0,
+            max: 4,
+            divisions: 4,
+            onChanged: (newValue) => setState(() => _limitRange = newValue),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildButtons(BuildContext context) {
+    return Row(
+      children: [
+        Expanded(
+          child: FlatButton(
+            color: Theme.of(context).accentColor,
+            textColor: Colors.white,
+            onPressed: () => read(),
+            child: Text('Read'),
+          ),
+        ),
+        Padding(padding: EdgeInsets.symmetric(horizontal: 4)),
+        Expanded(
+          child: FlatButton(
+            color: Theme.of(context).accentColor,
+            textColor: Colors.white,
+            onPressed: () => revokePermissions(),
+            child: Text('Revoke permissions'),
+          ),
+        ),
+      ],
+    );
   }
 }

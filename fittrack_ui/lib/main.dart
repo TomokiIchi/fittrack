@@ -2,9 +2,15 @@ import 'dart:async';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:fit_kit/fit_kit.dart';
 import 'package:flutter/material.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 Future main() async {
   await DotEnv().load('.env');
+  Map<Permission, PermissionStatus> statuses = await [
+    Permission.location,
+    Permission.storage,
+  ].request();
+  print(statuses[Permission.location]);
   runApp(MyApp());
 }
 
@@ -65,7 +71,6 @@ class _MyAppState extends State<MyApp> {
             results[e.dataType] = [];
           }
         }
-
         result = 'readAll: success';
       }
     } catch (e) {

@@ -1,8 +1,12 @@
 import 'dart:async';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:fit_kit/fit_kit.dart';
 import 'package:flutter/material.dart';
 
-void main() => runApp(MyApp());
+Future main() async {
+  await DotEnv().load('.env');
+  runApp(MyApp());
+}
 
 class MyApp extends StatefulWidget {
   @override
@@ -26,6 +30,7 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
 
+    print(DotEnv().env['VAR_NAME']); //For test
     final now = DateTime.now();
     _dates.add(null);
     for (int i = 7; i >= 0; i--) {
@@ -98,6 +103,7 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
+    //* ...演算子ってなんだろう？
     final items =
         results.entries.expand((entry) => [entry.key, ...entry.value]).toList();
 

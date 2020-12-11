@@ -9,8 +9,9 @@ Future main() async {
   Map<Permission, PermissionStatus> statuses = await [
     Permission.location,
     Permission.storage,
+    Permission.sensors,
   ].request();
-  print(statuses[Permission.location]);
+  print(statuses[Permission.sensors]);
   runApp(MyApp());
 }
 
@@ -36,7 +37,6 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
 
-    print(DotEnv().env['VAR_NAME']); //For test
     final now = DateTime.now();
     _dates.add(null);
     for (int i = 7; i >= 0; i--) {

@@ -7,7 +7,6 @@ import 'package:permission_handler/permission_handler.dart';
 Future main() async {
   await DotEnv().load('.env');
   Map<Permission, PermissionStatus> statuses = await [
-    Permission.location,
     Permission.storage,
     Permission.sensors,
   ].request();

@@ -2,27 +2,21 @@ PODS:
   - fit_kit (0.0.1):
     - Flutter
   - Flutter (1.0.0)
-  - "permission_handler (5.0.1+1)":
-    - Flutter
 
 DEPENDENCIES:
   - fit_kit (from `.symlinks/plugins/fit_kit/ios`)
-  - Flutter (from `Flutter`)
-  - permission_handler (from `.symlinks/plugins/permission_handler/ios`)
+  - Flutter (from `.symlinks/flutter/ios`)
 
 EXTERNAL SOURCES:
   fit_kit:
     :path: ".symlinks/plugins/fit_kit/ios"
   Flutter:
-    :path: Flutter
-  permission_handler:
-    :path: ".symlinks/plugins/permission_handler/ios"
+    :path: ".symlinks/flutter/ios"
 
 SPEC CHECKSUMS:
   fit_kit: 7643191161673bcd32863ae3f10baed6ce55c7c0
-  Flutter: 434fef37c0980e73bb6479ef766c45957d4b510c
-  permission_handler: eac8e15b4a1a3fba55b761d19f3f4e6b005d15b6
+  Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
 
-PODFILE CHECKSUM: e50a1174811e5f924c80136fd1a95a6695b788a1
+PODFILE CHECKSUM: ebd43b443038e611b86ede96e613bd6033c49497
 
-COCOAPODS: 1.10.0
+COCOAPODS: 1.9.1

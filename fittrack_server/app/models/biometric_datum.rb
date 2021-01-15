@@ -1,0 +1,2 @@
+class BiometricDatum < ApplicationRecord
+end

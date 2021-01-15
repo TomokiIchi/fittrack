@@ -1,0 +1,2 @@
+class BiometricDatasController < ApplicationController
+end

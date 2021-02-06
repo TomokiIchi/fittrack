@@ -9,7 +9,6 @@ class CreateBiometricData < ActiveRecord::Migration[6.0]
       t.integer :energy
       t.float :water
       t.integer :sleep
-
       t.timestamps
     end
   end

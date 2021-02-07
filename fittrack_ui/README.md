@@ -1,4 +1,4 @@
-# fit_kit_example
+# fittrack_ui
 
 Demonstrates how to use the fit_kit plugin.
 

@@ -1,8 +1,6 @@
-import 'dart:async';
-
-import 'package:fit_kit/fit_kit.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
+import 'dart:async';
+import 'package:health/health.dart';
 
 void main() => runApp(MyApp());
 
@@ -11,217 +9,152 @@ class MyApp extends StatefulWidget {
   _MyAppState createState() => _MyAppState();
 }
 
+enum AppState {
+  DATA_NOT_FETCHED,
+  FETCHING_DATA,
+  DATA_READY,
+  NO_DATA,
+  AUTH_NOT_GRANTED
+}
+
 class _MyAppState extends State<MyApp> {
-  String result = '';
-  Map<DataType, List<FitData>> results = Map();
-  bool permissions;
-
-  RangeValues _dateRange = RangeValues(1, 8);
-  List<DateTime> _dates = List<DateTime>();
-  double _limitRange = 0;
-
-  DateTime get _dateFrom => _dates[_dateRange.start.round()];
-  DateTime get _dateTo => _dates[_dateRange.end.round()];
-  int get _limit => _limitRange == 0.0 ? null : _limitRange.round();
+  List<HealthDataPoint> _healthDataList = [];
+  AppState _state = AppState.DATA_NOT_FETCHED;
 
   @override
   void initState() {
     super.initState();
-
-    final now = DateTime.now();
-    _dates.add(null);
-    for (int i = 7; i >= 0; i--) {
-      _dates.add(DateTime(
-        now.year,
-        now.month,
-        now.day,
-      ).subtract(Duration(days: i)));
-    }
-    _dates.add(null);
-
-    hasPermissions();
   }
 
-  Future<void> read() async {
-    results.clear();
+  Future<void> fetchData() async {
+    /// Get everything from midnight until now
+    DateTime startDate = DateTime(2020, 11, 07, 0, 0, 0);
+    DateTime endDate = DateTime(2020, 11, 07, 23, 59, 59);
 
-    try {
-      permissions = await FitKit.requestPermissions(DataType.values);
-      if (!permissions) {
-        result = 'requestPermissions: failed';
-      } else {
-        for (DataType type in DataType.values) {
-          try {
-            results[type] = await FitKit.read(
-              type,
-              dateFrom: _dateFrom,
-              dateTo: _dateTo,
-              limit: _limit,
-            );
-          } on UnsupportedException catch (e) {
-            results[e.dataType] = [];
-          }
-        }
+    HealthFactory health = HealthFactory();
 
-        result = 'readAll: success';
+    /// Define the types to get.
+    List<HealthDataType> types = [
+      HealthDataType.STEPS,
+      HealthDataType.WEIGHT,
+      HealthDataType.HEIGHT,
+      HealthDataType.BLOOD_GLUCOSE,
+      HealthDataType.DISTANCE_WALKING_RUNNING,
+    ];
+
+    setState(() => _state = AppState.FETCHING_DATA);
+
+    /// You MUST request access to the data types before reading them
+    bool accessWasGranted = await health.requestAuthorization(types);
+
+    int steps = 0;
+
+    if (accessWasGranted) {
+      try {
+        /// Fetch new data
+        List<HealthDataPoint> healthData =
+            await health.getHealthDataFromTypes(startDate, endDate, types);
+
+        /// Save all the new data points
+        _healthDataList.addAll(healthData);
+      } catch (e) {
+        print("Caught exception in getHealthDataFromTypes: $e");
       }
-    } catch (e) {
-      result = 'readAll: $e';
-    }
 
-    setState(() {});
+      /// Filter out duplicates
+      _healthDataList = HealthFactory.removeDuplicates(_healthDataList);
+
+      /// Print the results
+      _healthDataList.forEach((x) {
+        print("Data point: $x");
+        steps += (x.value as int);
+      });
+
+      print("Steps: $steps");
+
+      /// Update the UI to display the results
+      setState(() {
+        _state =
+            _healthDataList.isEmpty ? AppState.NO_DATA : AppState.DATA_READY;
+      });
+    } else {
+      print("Authorization not granted");
+      setState(() => _state = AppState.DATA_NOT_FETCHED);
+    }
   }
 
-  Future<void> revokePermissions() async {
-    results.clear();
-
-    try {
-      await FitKit.revokePermissions();
-      permissions = await FitKit.hasPermissions(DataType.values);
-      result = 'revokePermissions: success';
-    } catch (e) {
-      result = 'revokePermissions: $e';
-    }
-
-    setState(() {});
+  Widget _contentFetchingData() {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        Container(
+            padding: EdgeInsets.all(20),
+            child: CircularProgressIndicator(
+              strokeWidth: 10,
+            )),
+        Text('Fetching data...')
+      ],
+    );
   }
 
-  Future<void> hasPermissions() async {
-    try {
-      permissions = await FitKit.hasPermissions(DataType.values);
-    } catch (e) {
-      result = 'hasPermissions: $e';
-    }
+  Widget _contentDataReady() {
+    return ListView.builder(
+        itemCount: _healthDataList.length,
+        itemBuilder: (_, index) {
+          HealthDataPoint p = _healthDataList[index];
+          return ListTile(
+            title: Text("${p.typeString}: ${p.value}"),
+            trailing: Text('${p.unitString}'),
+            subtitle: Text('${p.dateFrom} - ${p.dateTo}'),
+          );
+        });
+  }
 
-    if (!mounted) return;
+  Widget _contentNoData() {
+    return Text('No Data to show');
+  }
 
-    setState(() {});
+  Widget _contentNotFetched() {
+    return Text('Press the download button to fetch data');
+  }
+
+  Widget _authorizationNotGranted() {
+    return Text('''Authorization not given.
+        For Android please check your OAUTH2 client ID is correct in Google Developer Console.
+         For iOS check your permissions in Apple Health.''');
+  }
+
+  Widget _content() {
+    if (_state == AppState.DATA_READY)
+      return _contentDataReady();
+    else if (_state == AppState.NO_DATA)
+      return _contentNoData();
+    else if (_state == AppState.FETCHING_DATA)
+      return _contentFetchingData();
+    else if (_state == AppState.AUTH_NOT_GRANTED)
+      return _authorizationNotGranted();
+
+    return _contentNotFetched();
   }
 
   @override
   Widget build(BuildContext context) {
-    final items =
-        results.entries.expand((entry) => [entry.key, ...entry.value]).toList();
-
     return MaterialApp(
       home: Scaffold(
-        appBar: AppBar(
-          title: Text('FitKit Example'),
-        ),
-        body: Container(
-          padding: EdgeInsets.symmetric(horizontal: 16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(padding: EdgeInsets.symmetric(vertical: 8)),
-              Text(
-                  'Date Range: ${_dateToString(_dateFrom)} - ${_dateToString(_dateTo)}'),
-              Text('Limit: $_limit'),
-              Text('Permissions: $permissions'),
-              Text('Result: $result'),
-              _buildDateSlider(context),
-              _buildLimitSlider(context),
-              _buildButtons(context),
-              Expanded(
-                child: ListView.builder(
-                  itemCount: items.length,
-                  itemBuilder: (context, index) {
-                    final item = items[index];
-                    if (item is DataType) {
-                      return Padding(
-                        padding: EdgeInsets.symmetric(vertical: 8),
-                        child: Text(
-                          '$item - ${results[item].length}',
-                          style: Theme.of(context).textTheme.title,
-                        ),
-                      );
-                    } else if (item is FitData) {
-                      return Padding(
-                        padding: EdgeInsets.symmetric(
-                          vertical: 4,
-                          horizontal: 8,
-                        ),
-                        child: Text(
-                          '$item',
-                          style: Theme.of(context).textTheme.caption,
-                        ),
-                      );
-                    }
-
-                    return Container();
-                  },
-                ),
-              ),
+          appBar: AppBar(
+            title: const Text('Plugin example app'),
+            actions: <Widget>[
+              IconButton(
+                icon: Icon(Icons.file_download),
+                onPressed: () {
+                  fetchData();
+                },
+              )
             ],
           ),
-        ),
-      ),
-    );
-  }
-
-  String _dateToString(DateTime dateTime) {
-    if (dateTime == null) {
-      return 'null';
-    }
-
-    return '${dateTime.day}.${dateTime.month}.${dateTime.year}';
-  }
-
-  Widget _buildDateSlider(BuildContext context) {
-    return Row(
-      children: [
-        Text('Date Range'),
-        Expanded(
-          child: RangeSlider(
-            values: _dateRange,
-            min: 0,
-            max: 9,
-            divisions: 10,
-            onChanged: (values) => setState(() => _dateRange = values),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildLimitSlider(BuildContext context) {
-    return Row(
-      children: [
-        Text('Limit'),
-        Expanded(
-          child: Slider(
-            value: _limitRange,
-            min: 0,
-            max: 4,
-            divisions: 4,
-            onChanged: (newValue) => setState(() => _limitRange = newValue),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildButtons(BuildContext context) {
-    return Row(
-      children: [
-        Expanded(
-          child: FlatButton(
-            color: Theme.of(context).accentColor,
-            textColor: Colors.white,
-            onPressed: () => read(),
-            child: Text('Read'),
-          ),
-        ),
-        Padding(padding: EdgeInsets.symmetric(horizontal: 4)),
-        Expanded(
-          child: FlatButton(
-            color: Theme.of(context).accentColor,
-            textColor: Colors.white,
-            onPressed: () => revokePermissions(),
-            child: Text('Revoke permissions'),
-          ),
-        ),
-      ],
+          body: Center(
+            child: _content(),
+          )),
     );
   }
 }

@@ -28,8 +28,8 @@ class _MyAppState extends State<MyApp> {
 
   Future<void> fetchData() async {
     /// Get everything from midnight until now
-    DateTime startDate = DateTime(2020, 11, 07, 0, 0, 0);
-    DateTime endDate = DateTime(2020, 11, 07, 23, 59, 59);
+    DateTime startDate = DateTime(2021, 02, 07, 0, 0, 0);
+    DateTime endDate = DateTime(2021, 02, 07, 23, 59, 59);
 
     HealthFactory health = HealthFactory();
 
@@ -39,7 +39,6 @@ class _MyAppState extends State<MyApp> {
       HealthDataType.WEIGHT,
       HealthDataType.HEIGHT,
       HealthDataType.BLOOD_GLUCOSE,
-      HealthDataType.DISTANCE_WALKING_RUNNING,
     ];
 
     setState(() => _state = AppState.FETCHING_DATA);
@@ -67,7 +66,6 @@ class _MyAppState extends State<MyApp> {
       /// Print the results
       _healthDataList.forEach((x) {
         print("Data point: $x");
-        steps += (x.value as int);
       });
 
       print("Steps: $steps");

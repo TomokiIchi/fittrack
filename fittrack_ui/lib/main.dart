@@ -57,10 +57,10 @@ class _MyHomePageState extends State<MyHomePage> {
       HealthDataType.STEPS,
       HealthDataType.WEIGHT,
       HealthDataType.HEIGHT,
-      HealthDataType.SLEEP_ASLEEP,
-      HealthDataType.SLEEP_AWAKE,
-      HealthDataType.SLEEP_IN_BED,
-      HealthDataType.HEART_RATE,
+      // HealthDataType.SLEEP_ASLEEP,
+      // HealthDataType.SLEEP_AWAKE,
+      // HealthDataType.SLEEP_IN_BED,
+      // HealthDataType.HEART_RATE,
     ];
 
     setState(() => _state = AppState.FETCHING_DATA);

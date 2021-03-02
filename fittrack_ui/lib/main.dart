@@ -61,9 +61,12 @@ class _MyHomePageState extends State<MyHomePage> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    _buildNotificationCard(),
+                    // _buildNotificationCard(),
                     _buildNextAppointmentTitle(),
                     _buildNextAppointmentInfo(),
+                    //Todo 取得したアカウント情報を以下の２つで表示
+                    // _buildProfileTitle(),
+                    // _buildProfileInfo(),
                   ],
                 ),
               ),
@@ -207,7 +210,7 @@ class _MyHomePageState extends State<MyHomePage> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text('Your Next Appointment', style: nextAppointmentTitleStyle),
+          Text('Today\'s data', style: nextAppointmentTitleStyle),
           Text('See All', style: nextAppointmentSubTitleStyle),
         ],
       ),
@@ -217,35 +220,109 @@ class _MyHomePageState extends State<MyHomePage> {
   _buildNextAppointmentInfo() {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 14.0, horizontal: 18.0),
+      // decoration: BoxDecoration(
+      //     color: Colors.white, borderRadius: BorderRadius.circular(18)),
       decoration: BoxDecoration(
-          color: Colors.white, borderRadius: BorderRadius.circular(18)),
+          color: Colors.white,
+          borderRadius: BorderRadius.all(Radius.circular(18)),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black12,
+              spreadRadius: 5.5,
+              blurRadius: 5.5,
+            )
+          ]),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
+          SizedBox(
+            height: 8.0,
+          ),
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              CircleAvatar(
-                backgroundColor: Colors.grey,
-                backgroundImage: NetworkImage(USER_IMAGE),
-                radius: 36,
+              // CircleAvatar(
+              //   backgroundColor: Colors.grey,
+              //   backgroundImage: NetworkImage(USER_IMAGE),
+              //   radius: 36,
+              // ),
+              Icon(
+                LineAwesomeIcons.heart,
+                size: 40,
+                color: Colors.redAccent,
               ),
               SizedBox(
                 width: 12,
               ),
               RichText(
                   text: TextSpan(
-                      text: 'Today',
+                      text: '心拍数：$_selectedIndex BPM',
                       style: appointmentMainStyle,
                       children: [
                     TextSpan(
-                      text: '\n Sunday at 8 pm',
+                      text: '\n Now',
                       style: appointmentDatastyle,
                     ),
+                  ]))
+            ],
+          ),
+          Padding(padding: EdgeInsets.only(top: 18)),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // CircleAvatar(
+              //   backgroundColor: Colors.grey,
+              //   backgroundImage: NetworkImage(USER_IMAGE),
+              //   radius: 36,
+              // ),
+              Icon(
+                LineAwesomeIcons.bed,
+                size: 40,
+                color: Colors.green,
+              ),
+              SizedBox(
+                width: 12,
+              ),
+              RichText(
+                  text: TextSpan(
+                      text: '昨日は$_selectedIndex眠りました',
+                      style: appointmentMainStyle,
+                      children: [
                     TextSpan(
-                      text: '\n My home',
-                      style: appointmentvenueStyle,
+                      text: '\n Now',
+                      style: appointmentDatastyle,
+                    ),
+                  ]))
+            ],
+          ),
+          Padding(padding: EdgeInsets.only(top: 18)),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // CircleAvatar(
+              //   backgroundColor: Colors.grey,
+              //   backgroundImage: NetworkImage(USER_IMAGE),
+              //   radius: 36,
+              // ),
+              Icon(
+                LineAwesomeIcons.map_marker,
+                size: 40,
+                color: Colors.blueGrey,
+              ),
+              SizedBox(
+                width: 12,
+              ),
+              RichText(
+                  text: TextSpan(
+                      text: '歩数：$_selectedIndex',
+                      style: appointmentMainStyle,
+                      children: [
+                    TextSpan(
+                      text: '\n Now',
+                      style: appointmentDatastyle,
                     ),
                   ]))
             ],

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-const mainBgColor = Color(0xFFf2f2f2);
-const darkColor = Color(0xFF2A0B35);
-const midColor = Color(0xFF522349);
-const lightColor = Color(0xFFA52C4D);
+const mainBgColor = Color(0xFFfDfDfD);
+const darkColor = Color(0xFFFC6076);
+const midColor = Color(0xFFFE8060);
+const lightColor = Color(0xFFFF9A44);
 const darkRedColor = Color(0xFFFA695C);
 const lightRedColor = Color(0xFFFD685A);
 

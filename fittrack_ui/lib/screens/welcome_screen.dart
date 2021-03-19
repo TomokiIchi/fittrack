@@ -1,6 +1,6 @@
-import 'package:fittrack_ui/utisl.dart';
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 
 class WelcomeScreen extends StatelessWidget {
   @override
@@ -24,20 +24,9 @@ class Background extends StatelessWidget {
     return Container(
       height: size.height,
       width: double.infinity,
-      child: Stack(
-        alignment: Alignment.center,
-        children: [
-          Positioned(
-            top: 0,
-            child: Image.asset('assets/images/logo.png'),
-          ),
-          Positioned(
-            bottom: 0,
-            left: 0,
-            child: Image.asset('assets/images/logo.png'),
-          ),
-          child,
-        ],
+      decoration: BoxDecoration(
+        image: DecorationImage(image: AssetImage('assets/images/logo.png')),
+        color: Colors.white,
       ),
     );
   }
@@ -54,14 +43,14 @@ class Body extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text(
-              "WELCOME TO Fittrack",
+              "WELCOME To Fittrack",
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
             SizedBox(height: size.height * 0.05),
-            SvgPicture.asset(
-              "assets/icons/chat.svg",
-              height: size.height * 0.45,
-            ),
+            // SvgPicture.asset(
+            //   "assets/icons/chat.svg",
+            //   height: size.height * 0.45,
+            // ),
             SizedBox(height: size.height * 0.05),
             ClipRect(
               child: TextButton(

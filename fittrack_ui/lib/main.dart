@@ -1,7 +1,6 @@
 import 'package:fittrack_ui/screens/welcome_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:fittrack_ui/utisl.dart';
-import 'screens/home_screen.dart';
 import 'screens/welcome_screen.dart';
 
 void main() => runApp(MyApp());
@@ -16,7 +15,6 @@ class MyApp extends StatelessWidget {
         primaryColor: lightColor,
         primarySwatch: Colors.deepPurple,
         accentColor: lightColor,
-        cursorColor: lightColor,
         // fontFamily: 'SourceSansPro',
         textTheme: TextTheme(
           display2: TextStyle(

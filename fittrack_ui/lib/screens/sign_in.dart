@@ -1,0 +1,500 @@
+import 'dart:io';
+import 'package:fittrack_ui/utisl.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:fittrack_ui/model/user.dart';
+// import 'package:flutter_dotenv/flutter_dotenv.dart';
+// import 'package:tabica_app/store/user_store.dart';
+// import 'package:url_launcher/url_launcher.dart';
+
+class SignIn extends StatefulWidget {
+  final SignInType signInType;
+// ログイン画面でメッセージを表示するか？
+  final bool needSignInMessage;
+
+  // 直接ユーザー登録に遷移したいとき
+  SignIn.registration({bool needSignInMessage = false})
+      : this(
+          signInType: SignInType.registration,
+          needSignInMessage: needSignInMessage,
+        );
+
+  // ログイン画面（デフォルト）
+  SignIn({
+    this.signInType = SignInType.login,
+    this.needSignInMessage = false,
+  }) : super();
+
+  @override
+  State<StatefulWidget> createState() {
+    return _SignInState();
+  }
+}
+
+enum SignInType { login, registration }
+
+class _SignInState extends State<SignIn> {
+  final TextEditingController _mailEditingController = TextEditingController();
+  final TextEditingController _passEditingController = TextEditingController();
+  // static DotEnv _env = DotEnv();
+  SignInType _type;
+
+  @override
+  void initState() {
+    super.initState();
+    this._type = widget.signInType;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // fcm_tokenのキャッシュを消しておく
+    // UserStore().fcmToken = "";
+
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: SingleChildScrollView(
+        child: ChangeNotifierProvider<SigninMessage>(
+          create: (_) => SigninMessage(),
+          child: Container(
+            child: Column(
+              children: <Widget>[
+                headerWidget(),
+                SizedBox(
+                  height: 20,
+                ),
+                Text(this._type == SignInType.login ? 'ログイン' : 'ユーザー登録',
+                    style: TextStyle(
+                        color: textcolor,
+                        fontSize: 18,
+                        fontWeight: FontWeight.w600)),
+                const SizedBox(height: 16),
+                Visibility(
+                  visible: widget.needSignInMessage,
+                  child: SizedBox(
+                    width: 300,
+                    child: Text(
+                      "予約はログインをする必要があります。ユーザ登録がお済みでない方はユーザ登録をしてください。",
+                      style: TextStyle(color: errorcolor),
+                    ),
+                  ),
+                ),
+                //
+                // const SizedBox(height: 16),
+                // SizedBox(width: 300, child: FacebookSignInButton()),
+                // const SizedBox(height: 38),
+                // SizedBox(width: 300, child: LineSignInButton()),
+                // iosのみ表示
+                // Visibility(
+                //   visible: Platform.isIOS,
+                //   child: Column(children: <Widget>[
+                //     const SizedBox(height: 38),
+                //     SizedBox(width: 300, child: AppleSignInButton())
+                //   ]),
+                // ),
+                // ユーザー登録のみ表示
+                Visibility(
+                  visible: (this._type == SignInType.registration),
+                  child: Column(children: <Widget>[
+                    const SizedBox(height: 32),
+                    SizedBox(
+                        width: 300,
+                        child: AppButton.withSize(
+                          "メールアドレスで登録",
+                          buttonType: ButtonType.registeration,
+                          onPressed: () {
+                            Navigator.pushReplacementNamed(
+                                context, '/sign_up_with_email');
+                          },
+                        ))
+                  ]),
+                ),
+                // ログイン / ユーザー登録 で差異のある部分
+                this._type == SignInType.login
+                    ? _loginWidget()
+                    : _userRegistrationWidget(),
+                SizedBox(height: 50),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  // ヘッダー
+  Widget headerWidget() {
+    return Column(
+      children: <Widget>[
+        const SizedBox(height: 85),
+        Center(
+            child: Image.asset('assets/images/logo_splash.png',
+                filterQuality: FilterQuality.medium)),
+      ],
+    );
+  }
+
+  // ログイン画面
+  Column _loginWidget() {
+    return Column(
+      children: <Widget>[
+        Divider(color: darkColor, indent: 16, endIndent: 16),
+        const SizedBox(height: 40),
+        SizedBox(
+          width: 264,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Align(
+                alignment: Alignment.centerLeft,
+                child: AppText.signinLabel("メールアドレス"),
+              ),
+              SizedBox(height: 8),
+              AppInput.input(_mailEditingController,
+                  keyboardType: TextInputType.emailAddress,
+                  hintText: "メールアドレス"),
+              const SizedBox(height: 15),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  AppText.signinLabel("パスワード"),
+                  const SizedBox(width: 14),
+                  Text(
+                    "半角英数記号8文字以上",
+                    style: TextStyle(
+                      color: textcolor,
+                      fontSize: 10,
+                    ),
+                  )
+                ],
+              ),
+              SizedBox(height: 8),
+              AppInput.input(
+                _passEditingController,
+                keyboardType: TextInputType.visiblePassword,
+                hintText: "パスワード",
+                obscureText: true,
+              ),
+              const SizedBox(height: 10),
+              GestureDetector(
+                onTap: () async {
+                  // String url = _env.env["PASSWORD_VERIFY_URL"];
+                  // if (await canLaunch(url)) {
+                  //   await launch(url);
+                  // }
+                },
+                child: Center(
+                    child: Text(
+                  "パスワードをお忘れの方は",
+                  style: TextStyle(color: Colors.blueAccent, fontSize: 16),
+                )),
+              ),
+            ],
+          ),
+        ),
+        Consumer<SigninMessage>(
+          builder: (_, SigninMessage message, __) {
+            return Container(
+              margin: EdgeInsets.fromLTRB(40, 0, 40, 0),
+              child: Text(
+                message.message,
+                style: TextStyle(fontSize: 14, color: errorcolor),
+              ),
+            );
+          },
+        ),
+        const SizedBox(height: 20),
+        SizedBox(
+          width: 300,
+          child: SignInButton(
+            _mailEditingController,
+            _passEditingController,
+          ),
+        ),
+        SizedBox(height: 15),
+        Text("ユーザー登録がお済みでない方は", style: TextStyle(fontSize: 16)),
+        SizedBox(height: 10),
+        GestureDetector(
+          child: Text(
+            "ユーザー登録",
+            style: TextStyle(color: Colors.blueAccent, fontSize: 16),
+          ),
+          onTap: () {
+            setState(() {
+              this._type = SignInType.registration;
+            });
+          },
+        ),
+        SizedBox(height: 20),
+      ],
+    );
+  }
+
+  // ユーザー登録選択画面
+  Column _userRegistrationWidget() {
+    return Column(
+      children: <Widget>[
+        const SizedBox(height: 38),
+        GestureDetector(
+          child: Text(
+            "ユーザー登録がお済みの方はこちら",
+            style: TextStyle(color: Colors.blueAccent, fontSize: 16),
+          ),
+          onTap: () {
+            setState(() {
+              this._type = SignInType.login;
+            });
+          },
+        ),
+      ],
+    );
+  }
+}
+
+class SigninMessage extends ChangeNotifier {
+  String message = "";
+  String snsMessage = "";
+
+  void clear() {
+    message = "";
+    snsMessage = "";
+  }
+
+  void setMessage(_message) {
+    clear();
+    message = _message;
+    notifyListeners();
+  }
+
+  void setSnsMessage(_snsMessage) {
+    clear();
+    snsMessage = _snsMessage;
+    notifyListeners();
+  }
+}
+
+enum ButtonType {
+  normal,
+  line,
+  facebook,
+  apple,
+  registeration,
+  white,
+  reservation,
+  negative,
+  cancel,
+}
+
+class AppButton extends Container {
+  final ButtonType buttonType;
+  final VoidCallback onPressed;
+  final text;
+
+  static Widget withSize(text,
+      {double height = 44.0,
+      double minWidth = 300,
+      Function onPressed,
+      ButtonType buttonType}) {
+    return ButtonTheme(
+      height: height,
+      minWidth: minWidth,
+      child: AppButton(text, () => onPressed(), buttonType: buttonType),
+    );
+  }
+
+  AppButton(this.text, this.onPressed, {this.buttonType = ButtonType.normal})
+      : super();
+
+  @override
+  Widget build(BuildContext context) {
+    return FlatButton(
+      child: Stack(
+        alignment: Alignment.centerLeft,
+        children: <Widget>[
+          Visibility(
+              visible: _iconPath.isNotEmpty,
+              child: Image.asset(_iconPath, width: 30, height: 30)),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [AppText.appButton(text)],
+          ),
+        ],
+      ),
+      textColor: _textColor,
+      color: _color,
+      shape: RoundedRectangleBorder(
+        side: _borderSide,
+        borderRadius: const BorderRadius.all(Radius.circular(6)),
+      ),
+      onPressed: onPressed,
+    );
+  }
+
+  Color get _color {
+    switch (buttonType) {
+      case ButtonType.normal:
+        return midColor;
+      case ButtonType.white:
+        return Colors.white;
+      default:
+        return midColor;
+    }
+  }
+
+  String get _iconPath {
+    switch (buttonType) {
+      default:
+        return '';
+    }
+  }
+
+  get _textColor {
+    switch (buttonType) {
+      default:
+        return Colors.white;
+    }
+  }
+
+  get _borderSide {
+    switch (buttonType) {
+      case ButtonType.white:
+        return BorderSide(color: Colors.white);
+      default:
+        return BorderSide.none;
+    }
+  }
+}
+
+class AppText extends Text {
+  AppText(value,
+      {double fontSize = 14,
+      FontWeight fontWeight = FontWeight.w300,
+      Color color,
+      int maxLines,
+      TextOverflow overflow})
+      : super(
+          value,
+          style: TextStyle(
+            fontSize: fontSize,
+            fontWeight: fontWeight,
+            color: color,
+          ),
+          maxLines: maxLines,
+          overflow: overflow,
+        );
+
+  AppText.appButton(value, {Color color})
+      : super(
+          value,
+          style: TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.w600,
+            color: color,
+          ),
+        );
+
+  // チャットの既読状況
+  AppText.messageStatus(value, {Color color})
+      : super(
+          value,
+          style: TextStyle(
+              fontSize: 10, fontWeight: FontWeight.w400, color: color),
+        );
+
+  // サインイン画面のラベル
+  AppText.signinLabel(value)
+      : super(
+          value,
+          style: TextStyle(
+              fontSize: 14, fontWeight: FontWeight.w600, color: textcolor),
+        );
+}
+
+class AppInput {
+  static double defaultHeight = 32;
+
+  static Widget input(TextEditingController controller,
+      {hintText = "",
+      keyboardType = TextInputType.text,
+      obscureText = false,
+      autofocus = false}) {
+    return SizedBox(
+      height: defaultHeight,
+      child: Container(
+        margin: EdgeInsets.only(top: 1),
+        decoration: BoxDecoration(
+          border: Border.all(width: 1, color: Colors.yellow),
+          borderRadius: BorderRadius.all(Radius.circular(3.0)),
+        ),
+        child: Container(
+          child: Align(
+            alignment: Alignment.centerLeft,
+            child: TextField(
+              cursorColor: midColor,
+              autofocus: autofocus,
+              obscureText: obscureText,
+              cursorWidth: 1.0,
+              keyboardType: keyboardType,
+              controller: controller,
+              decoration: InputDecoration(
+                  isDense: true,
+                  contentPadding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
+                  border: InputBorder.none,
+                  hintText: hintText,
+                  hintStyle: TextStyle(fontSize: 12)),
+              style: TextStyle(fontSize: 16),
+              maxLines: 1,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class SignInButton extends StatelessWidget {
+  final TextEditingController mailEditingController;
+  final TextEditingController passEditingController;
+
+  SignInButton(
+    this.mailEditingController,
+    this.passEditingController,
+  );
+
+  @override
+  Widget build(BuildContext context) {
+    final SigninMessage message =
+        Provider.of<SigninMessage>(context, listen: false);
+    return AppButton.withSize("ログイン", onPressed: () {
+      // final MutationOptions options = MutationOptions(
+      //   documentNode: gql(AppMutation.signInUserMutation()),
+      //   variables: <String, dynamic>{
+      //     'mail': mailEditingController.text,
+      //     'password': passEditingController.text,
+      //   },
+      // );
+      // AppClient()
+      //     .client(needSession: false)
+      //     .mutate(options)
+      //     .then((QueryResult result) async {
+      //   if (result.hasException) {
+      //     message.setMessage(StringUtil.buildGraphQLErrorMessage(result));
+      //   } else if (result.data == null ||
+      //       result.data["signInUserMutation"]["success"] == false) {
+      //     // ここは通らないかもしれなが念の為
+      //     message.setMessage("入力内容を確認してください");
+      //   } else {
+      //     //　セッション保存
+      //     UserStore().session = result.data["signInUserMutation"]["session"];
+      //     // ユーザ情報を取得しておく
+      //     await User.getCurrentUser(withSetStore: true);
+      //     // 画面遷移
+      //     SignInDispatcher.screenTransition(context);
+      //   }
+      // }).catchError((err) {
+      //   message.setMessage("エラーが発生しました");
+      // });
+    });
+  }
+}

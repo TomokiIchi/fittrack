@@ -1,9 +1,15 @@
+import 'package:fittrack_ui/screens/home_screen.dart';
+import 'package:fittrack_ui/screens/sign_in.dart';
 import 'package:fittrack_ui/screens/welcome_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:fittrack_ui/utisl.dart';
 import 'screens/welcome_screen.dart';
 
-void main() => runApp(MyApp());
+void main() async {
+  // await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   @override
@@ -37,15 +43,9 @@ class MyApp extends StatelessWidget {
         ),
       ),
       routes: <String, WidgetBuilder>{
-        // '/': (BuildContext context) => Provider<SplashBloc>(
-        //       builder: (context) => SplashBloc(),
-        //       child: SplashPage(),
-        //       dispose: (_, bloc) {
-        //         bloc.dispose();
-        //       },
-        //     ),
-        '/': (BuildContext context) => WelcomeScreen(),
-        // '/login': (BuildContext context) => FlutterLogin(),
+        '/': (BuildContext context) => WelComeScreen(),
+        '/home': (BuildContext context) => MyHomePage(),
+        '/signin': (BuildContext context) => SignIn(),
       },
     );
   }

@@ -6,6 +6,8 @@ const midColor = Color(0xFFFE8060);
 const lightColor = Color(0xFFFF9A44);
 const darkRedColor = Color(0xFFFA695C);
 const lightRedColor = Color(0xFFFD685A);
+const textcolor = Colors.black;
+const errorcolor = Colors.red;
 
 const purpleGradient = LinearGradient(
   colors: <Color>[darkColor, midColor, lightColor],

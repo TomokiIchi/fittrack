@@ -81,7 +81,8 @@ class _WelComeScreenState extends State<WelComeScreen> {
               width: logoWidth,
               child: InkWell(
                 child: Image.asset('assets/images/logo.png'),
-                onTap: () => Navigator.pushReplacementNamed(context, '/signin'),
+                onTap: () =>
+                    Navigator.pushReplacementNamed(context, '/sign_in'),
               ),
             ),
           ],

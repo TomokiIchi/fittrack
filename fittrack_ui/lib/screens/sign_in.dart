@@ -38,6 +38,8 @@ enum SignInType { login, registration }
 class _SignInState extends State<SignIn> {
   final TextEditingController _mailEditingController = TextEditingController();
   final TextEditingController _passEditingController = TextEditingController();
+  final TextEditingController _nicknameEditingController =
+      TextEditingController();
   // static DotEnv _env = DotEnv();
   SignInType _type;
 
@@ -69,17 +71,8 @@ class _SignInState extends State<SignIn> {
                         color: textcolor,
                         fontSize: 18,
                         fontWeight: FontWeight.w600)),
+                Divider(color: darkColor, indent: 16, endIndent: 16),
                 const SizedBox(height: 16),
-                Visibility(
-                  visible: widget.needSignInMessage,
-                  child: SizedBox(
-                    width: 300,
-                    child: Text(
-                      "予約はログインをする必要があります。ユーザ登録がお済みでない方はユーザ登録をしてください。",
-                      style: TextStyle(color: errorcolor),
-                    ),
-                  ),
-                ),
                 //
                 // const SizedBox(height: 16),
                 // SizedBox(width: 300, child: FacebookSignInButton()),
@@ -93,28 +86,12 @@ class _SignInState extends State<SignIn> {
                 //     SizedBox(width: 300, child: AppleSignInButton())
                 //   ]),
                 // ),
-                // ユーザー登録のみ表示
-                Visibility(
-                  visible: (this._type == SignInType.registration),
-                  child: Column(children: <Widget>[
-                    const SizedBox(height: 32),
-                    SizedBox(
-                        width: 300,
-                        child: AppButton.withSize(
-                          "メールアドレスで登録",
-                          buttonType: ButtonType.registeration,
-                          onPressed: () {
-                            Navigator.pushReplacementNamed(
-                                context, '/sign_up_with_email');
-                          },
-                        ))
-                  ]),
-                ),
                 // ログイン / ユーザー登録 で差異のある部分
                 this._type == SignInType.login
                     ? _loginWidget()
                     : _userRegistrationWidget(),
                 SizedBox(height: 50),
+                // ユーザー登録のみ表示
               ],
             ),
           ),
@@ -139,57 +116,51 @@ class _SignInState extends State<SignIn> {
   Column _loginWidget() {
     return Column(
       children: <Widget>[
-        Divider(color: darkColor, indent: 16, endIndent: 16),
-        const SizedBox(height: 40),
         SizedBox(
-          width: 264,
+          width: 300,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Align(
-                alignment: Alignment.centerLeft,
-                child: AppText.signinLabel("メールアドレス"),
+              Container(
+                padding: EdgeInsets.only(top: 40),
+                child: AppText.signinLabel('メールアドレス'),
               ),
-              SizedBox(height: 8),
-              AppInput.input(_mailEditingController,
-                  keyboardType: TextInputType.emailAddress,
-                  hintText: "メールアドレス"),
-              const SizedBox(height: 15),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: <Widget>[
-                  AppText.signinLabel("パスワード"),
-                  const SizedBox(width: 14),
-                  Text(
-                    "半角英数記号8文字以上",
-                    style: TextStyle(
-                      color: textcolor,
-                      fontSize: 10,
-                    ),
-                  )
-                ],
+              Container(
+                padding: EdgeInsets.only(top: 8),
+                child: AppInput.input(_mailEditingController,
+                    keyboardType: TextInputType.emailAddress,
+                    hintText: 'メールアドレス'),
               ),
-              SizedBox(height: 8),
-              AppInput.input(
-                _passEditingController,
-                keyboardType: TextInputType.visiblePassword,
-                hintText: "パスワード",
-                obscureText: true,
+              Container(
+                  padding: EdgeInsets.only(top: 18),
+                  child: Row(
+                    children: <Widget>[
+                      AppText.signinLabel('パスワード'),
+                      SizedBox(width: 10),
+                      Text('半角英数記号8文字以上', style: TextStyle(fontSize: 10)),
+                    ],
+                  )),
+              Container(
+                padding: EdgeInsets.only(top: 8),
+                child: AppInput.input(_passEditingController,
+                    keyboardType: TextInputType.visiblePassword,
+                    hintText: 'パスワード',
+                    obscureText: true),
               ),
               const SizedBox(height: 10),
-              GestureDetector(
-                onTap: () async {
-                  // String url = _env.env["PASSWORD_VERIFY_URL"];
-                  // if (await canLaunch(url)) {
-                  //   await launch(url);
-                  // }
-                },
-                child: Center(
-                    child: Text(
-                  "パスワードをお忘れの方は",
-                  style: TextStyle(color: Colors.blueAccent, fontSize: 16),
-                )),
-              ),
+              // GestureDetector(
+              //   onTap: () async {
+              // String url = _env.env["PASSWORD_VERIFY_URL"];
+              // if (await canLaunch(url)) {
+              //   await launch(url);
+              // }
+              //   },
+              // child: Center(
+              //     child: Text(
+              //   "パスワードをお忘れの方は",
+              //   style: TextStyle(color: Colors.blueAccent, fontSize: 16),
+              // )),
+              // ),
             ],
           ),
         ),
@@ -235,17 +206,111 @@ class _SignInState extends State<SignIn> {
   Column _userRegistrationWidget() {
     return Column(
       children: <Widget>[
-        const SizedBox(height: 38),
-        GestureDetector(
-          child: Text(
-            "ユーザー登録がお済みの方はこちら",
-            style: TextStyle(color: Colors.blueAccent, fontSize: 16),
+        SizedBox(
+          width: 300,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              // メールアドレス
+              Container(
+                padding: EdgeInsets.only(top: 40),
+                child: AppText.signinLabel('メールアドレス'),
+              ),
+              Container(
+                padding: EdgeInsets.only(top: 8),
+                child: AppInput.input(_mailEditingController,
+                    keyboardType: TextInputType.emailAddress,
+                    hintText: 'メールアドレス'),
+              ),
+              Container(
+                  padding: EdgeInsets.only(top: 18),
+                  child: Row(
+                    children: <Widget>[
+                      AppText.signinLabel('パスワード'),
+                      SizedBox(width: 10),
+                      Text('半角英数記号8文字以上', style: TextStyle(fontSize: 10)),
+                    ],
+                  )),
+              Container(
+                padding: EdgeInsets.only(top: 8),
+                child: AppInput.input(_passEditingController,
+                    keyboardType: TextInputType.visiblePassword,
+                    hintText: 'パスワード',
+                    obscureText: true),
+              ),
+              Container(
+                padding: EdgeInsets.only(top: 26),
+                child: AppText.signinLabel('ニックネーム'),
+              ),
+              Container(
+                padding: EdgeInsets.only(top: 8),
+                child: AppInput.input(_nicknameEditingController,
+                    keyboardType: TextInputType.emailAddress,
+                    hintText: 'ニックネーム'),
+              ),
+              //エラーメッセージ
+              Consumer<SigninMessage>(builder: (_, SigninMessage message, __) {
+                return Container(
+                  padding: EdgeInsets.only(top: 8),
+                  child: Text(
+                    message.message,
+                    style: TextStyle(fontSize: 14, color: errorcolor),
+                  ),
+                );
+              }),
+              Container(
+                  padding: EdgeInsets.only(top: 15),
+                  child: RichText(
+                      text: TextSpan(children: [
+                    TextSpan(
+                        text: '登録により、', style: TextStyle(color: textcolor)),
+                    TextSpan(
+                      text: '利用規約',
+                      style: TextStyle(color: lightColor),
+                      // recognizer: TapGestureRecognizer()
+                      // ..onTap = () => launch(_env.env['TERMS_URL']),
+                    ),
+                    TextSpan(text: 'および', style: TextStyle(color: textcolor)),
+                    TextSpan(
+                      text: 'プライバシーポリシー',
+                      style: TextStyle(color: lightColor),
+                      // recognizer: TapGestureRecognizer()
+                      // ..onTap = () =>
+                      // launch(_env.env['PRIVACY_POLICY_URL']),
+                    ),
+                    TextSpan(
+                        text: 'に同意したとみなされます。',
+                        style: TextStyle(color: textcolor)),
+                  ]))),
+              SizedBox(height: 20),
+              SizedBox(
+                width: 300,
+                child: SignupButton(
+                  _mailEditingController,
+                  _passEditingController,
+                  _nicknameEditingController,
+                ),
+              ),
+              SizedBox(height: 15),
+              Center(
+                  child: Text("ユーザー登録がお済みの方は", style: TextStyle(fontSize: 16))),
+              SizedBox(height: 5),
+              Center(
+                child: GestureDetector(
+                  child: Text(
+                    "ログイン",
+                    style: TextStyle(color: Colors.blueAccent, fontSize: 16),
+                  ),
+                  onTap: () {
+                    setState(() {
+                      this._type = SignInType.login;
+                    });
+                  },
+                ),
+              ),
+              SizedBox(height: 20),
+            ],
           ),
-          onTap: () {
-            setState(() {
-              this._type = SignInType.login;
-            });
-          },
         ),
       ],
     );
@@ -495,6 +560,57 @@ class SignInButton extends StatelessWidget {
       // }).catchError((err) {
       //   message.setMessage("エラーが発生しました");
       // });
+    });
+  }
+}
+
+class SignupButton extends StatelessWidget {
+  final TextEditingController mailEditingController;
+  final TextEditingController passEditingController;
+  final TextEditingController nicknameEditingController;
+
+  SignupButton(
+    this.mailEditingController,
+    this.passEditingController,
+    this.nicknameEditingController,
+  );
+
+  @override
+  Widget build(BuildContext context) {
+    final SigninMessage message =
+        Provider.of<SigninMessage>(context, listen: false);
+    return AppButton.withSize("登録する", onPressed: () {
+      //   final MutationOptions options = MutationOptions(
+      //     documentNode: gql(AppMutation.signUpUserMutation()),
+      //     variables: <String, dynamic>{
+      //       "authType": "password",
+      //       "mail": mailEditingController.text,
+      //       "password": passEditingController.text,
+      //       "nickname": nicknameEditingController.text
+      //     },
+      //   );
+
+      //   AppClient()
+      //       .client(needSession: false)
+      //       .mutate(options)
+      //       .then((QueryResult result) async {
+      //     if (result.hasException) {
+      //       message.setMessage(StringUtil.buildGraphQLErrorMessage(result));
+      //     } else if (result.data == null ||
+      //         result.data["signUpUserMutation"]["success"] == false) {
+      //       // ここは通らないかもしれなが念の為
+      //       message.setMessage("入力内容を確認してください");
+      //     } else {
+      //       //　セッション保存
+      //       UserStore().session = result.data["signUpUserMutation"]["session"];
+      //       // ユーザ情報を取得しておく
+      //       await User.getCurrentUser(withSetStore: true);
+      //       // 画面遷移
+      //       SignInDispatcher.screenTransition(context);
+      //     }
+      //   }).catchError((err) {
+      //     message.setMessage("エラーが発生しました");
+      //   });
     });
   }
 }

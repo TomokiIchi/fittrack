@@ -57,7 +57,7 @@ class _WelComeScreenState extends State<WelComeScreen> {
     //     Navigator.pushReplacementNamed(context, '/home');
     //   }
     // });
-    // Navigator.pushNamed(context, '/home');
+    Navigator.pushReplacementNamed(context, '/sign_in');
   }
 
   @override
@@ -79,11 +79,7 @@ class _WelComeScreenState extends State<WelComeScreen> {
               left: (windowWidth - logoWidth) / 2,
               top: windowHeight / 2 - (logoHeight / 1.35), // 1.35は微調整のため
               width: logoWidth,
-              child: InkWell(
-                child: Image.asset('assets/images/logo.png'),
-                onTap: () =>
-                    Navigator.pushReplacementNamed(context, '/sign_in'),
-              ),
+              child: Image.asset('assets/images/logo.png'),
             ),
           ],
         ),

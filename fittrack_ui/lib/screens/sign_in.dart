@@ -532,6 +532,7 @@ class SignInButton extends StatelessWidget {
     final SigninMessage message =
         Provider.of<SigninMessage>(context, listen: false);
     return AppButton.withSize("ログイン", onPressed: () {
+      Navigator.pushReplacementNamed(context, '/home');
       // final MutationOptions options = MutationOptions(
       //   documentNode: gql(AppMutation.signInUserMutation()),
       //   variables: <String, dynamic>{
@@ -580,6 +581,7 @@ class SignupButton extends StatelessWidget {
     final SigninMessage message =
         Provider.of<SigninMessage>(context, listen: false);
     return AppButton.withSize("登録する", onPressed: () {
+      Navigator.pushReplacementNamed(context, '/home');
       //   final MutationOptions options = MutationOptions(
       //     documentNode: gql(AppMutation.signUpUserMutation()),
       //     variables: <String, dynamic>{

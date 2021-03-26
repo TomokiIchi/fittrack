@@ -1,6 +1,5 @@
 import 'package:fittrack_ui/screens/home_screen.dart';
 import 'package:fittrack_ui/screens/sign_in.dart';
-import 'package:fittrack_ui/screens/sign_up.dart';
 import 'package:fittrack_ui/screens/welcome_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -47,7 +46,6 @@ class MyApp extends StatelessWidget {
         '/': (BuildContext context) => WelComeScreen(),
         '/home': (BuildContext context) => MyHomePage(),
         '/sign_in': (BuildContext context) => SignIn(),
-        '/sign_up': (BuildContext context) => SignupWithEmail(),
       },
     );
   }

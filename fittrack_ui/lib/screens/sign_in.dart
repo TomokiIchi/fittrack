@@ -3,7 +3,6 @@ import 'package:fittrack_ui/utisl.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:fittrack_ui/model/user.dart';
 // import 'package:flutter_dotenv/flutter_dotenv.dart';
 // import 'package:tabica_app/store/user_store.dart';

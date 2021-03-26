@@ -33,10 +33,9 @@ dependencies:
   line_awesome_icons: ^1.0.4+2
   shared_preferences: ^2.0.5
   provider: ^4.0.2
-  graphql: ^3.0.0
-  graphql_flutter: ^3.0.0
   flutter_dotenv: ^3.1.0
   intl: ^0.17.0
+  http: ^0.13.1
 
 
 dev_dependencies:

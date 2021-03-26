@@ -2,6 +2,7 @@ import 'dart:ui';
 import 'dart:async';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 class WelComeScreen extends StatefulWidget {
   @override
@@ -27,6 +28,14 @@ class _WelComeScreenState extends State<WelComeScreen> {
   //Todo 3. _isNeedSigninの処理
   //Todo 4. _isNeedHealthの処理
   move() async {
+    var url = Uri.parse('http://localhost:3000/api/v1/auth/');
+    var response = await http.post(url, body: {
+      'email': 'doodle@example.com',
+      'password': 'password',
+      "password_confirmation": 'password'
+    });
+    print('Response status: ${response.statusCode}');
+    print('Response body: ${response.body}');
     // sharedPreferenceのインスタンスを保存しておく
     // UserStore().prefs = await SharedPreferences.getInstance();
     //アプリを開いたことをAnalyticsにログする

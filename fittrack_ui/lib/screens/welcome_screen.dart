@@ -1,8 +1,6 @@
 import 'dart:ui';
 import 'dart:async';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:fittrack_ui/screens/home_screen.dart';
-import 'package:fittrack_ui/utisl.dart';
 import 'package:flutter/material.dart';
 
 class WelComeScreen extends StatefulWidget {
@@ -11,9 +9,12 @@ class WelComeScreen extends StatefulWidget {
 }
 
 class _WelComeScreenState extends State<WelComeScreen> {
+  //ログインチェックを_isNeedSignin、ヘルスデータの同期チェックを_isNeedHealthとする（0が必要なし、1が必要あり）
   _WelComeScreenState();
 
-  bool _isNeedUpdate;
+  bool _isNeedUpdate = false;
+  bool _isNeedSignin = false;
+  bool _isNeedHealth = false;
 
   @override
   initState() {
@@ -21,10 +22,14 @@ class _WelComeScreenState extends State<WelComeScreen> {
     move();
   }
 
+  //Todo 1. SharedPrefferenceの初期化、データ保持
+  //Todo 2. _isNeedUpdateの処理
+  //Todo 3. _isNeedSigninの処理
+  //Todo 4. _isNeedHealthの処理
   move() async {
     // sharedPreferenceのインスタンスを保存しておく
     // UserStore().prefs = await SharedPreferences.getInstance();
-    // //アプリを開いたことをAnalyticsにログする
+    //アプリを開いたことをAnalyticsにログする
     // AppAnalytics.logAppOpen();
     // Future.wait([
     //   _delay(),
@@ -95,109 +100,3 @@ class _WelComeScreenState extends State<WelComeScreen> {
     return Future.delayed(const Duration(milliseconds: 1000));
   }
 }
-
-// class WelcomeScreen extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       body: Body(),
-//     );
-//   }
-// }
-
-// class Body extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     Size size = MediaQuery.of(context).size;
-//     // This size provide us total height and width of our screen
-//     return Background(
-//       child: SingleChildScrollView(
-//         child: Column(
-//           mainAxisAlignment: MainAxisAlignment.center,
-//           children: <Widget>[
-//             Text(
-//               "WELCOME To Fittrack",
-//               style:
-//                   TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
-//             ),
-//             SizedBox(height: size.height * 0.05),
-//             SizedBox(height: size.height * 0.05),
-//             ClipRect(
-//               child: TextButton(
-//                 onPressed: () {},
-//                 child: Text(
-//                   'Longin',
-//                   style: TextStyle(
-//                     color: Colors.white,
-//                   ),
-//                 ),
-//               ),
-//             ),
-//             RoundedButton(
-//               text: "LOGIN",
-//               press: () {
-//                 Navigator.push(
-//                   context,
-//                   MaterialPageRoute(
-//                     builder: (context) {
-//                       return MyHomePage();
-//                     },
-//                   ),
-//                 );
-//               },
-//             ),
-//             RoundedButton(
-//               text: "SIGN UP",
-//               color: lightColor,
-//               textColor: Colors.black,
-//               press: () {
-//                 Navigator.push(
-//                   context,
-//                   MaterialPageRoute(
-//                     builder: (context) {
-//                       return MyHomePage();
-//                     },
-//                   ),
-//                 );
-//               },
-//             ),
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }
-
-// class RoundedButton extends StatelessWidget {
-//   final String text;
-//   final Function press;
-//   final Color color, textColor;
-//   const RoundedButton({
-//     Key key,
-//     this.text,
-//     this.press,
-//     this.color = lightColor,
-//     this.textColor = Colors.black,
-//   }) : super(key: key);
-
-//   @override
-//   Widget build(BuildContext context) {
-//     Size size = MediaQuery.of(context).size;
-//     return Container(
-//       margin: EdgeInsets.symmetric(vertical: 10),
-//       width: size.width * 0.8,
-//       child: ClipRRect(
-//         borderRadius: BorderRadius.circular(29),
-//         child: FlatButton(
-//           padding: EdgeInsets.symmetric(vertical: 20, horizontal: 40),
-//           color: color,
-//           onPressed: press,
-//           child: Text(
-//             text,
-//             style: TextStyle(color: textColor),
-//           ),
-//         ),
-//       ),
-//     );
-//   }
-// }

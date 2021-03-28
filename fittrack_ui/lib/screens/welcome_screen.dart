@@ -47,7 +47,7 @@ class _WelComeScreenState extends State<WelComeScreen> {
     //     _isNeedUpdate = isNeed;
     //   }),
     // ]).whenComplete(() {
-    //   if ((UserStore().session ?? '').isNotEmpty) {
+    //   if ((UserStore().session ?? '').isNotEmpty) {  
     //     // session取得済みの場合
     //     // ユーザ情報を取得してstoreに設定
     //     User.getCurrentUser(withSetStore: true).then((User user) async {

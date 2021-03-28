@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:fittrack_ui/model/user.dart';
+import 'package:http/http.dart' as http;
 // import 'package:flutter_dotenv/flutter_dotenv.dart';
 // import 'package:tabica_app/store/user_store.dart';
 // import 'package:url_launcher/url_launcher.dart';
@@ -580,8 +581,14 @@ class SignupButton extends StatelessWidget {
     final SigninMessage message =
         Provider.of<SigninMessage>(context, listen: false);
     return AppButton.withSize("登録する", onPressed: () {
+      var url = Uri.parse('http://localhost:3000/api/v1/auth/');
+      var response = http.post(url, body: {
+        'email': mailEditingController.text,
+        'password': passEditingController.text,
+        "password_confirmation": passEditingController.text
+      });
       Navigator.pushReplacementNamed(context, '/home');
-      //   final MutationOptions options = MutationOptions(
+      //   final MutationOptions options = MutationOptions
       //     documentNode: gql(AppMutation.signUpUserMutation()),
       //     variables: <String, dynamic>{
       //       "authType": "password",

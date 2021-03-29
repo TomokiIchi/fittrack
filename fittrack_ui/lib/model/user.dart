@@ -8,6 +8,9 @@ class User {
   final DateTime signedInAt;
   final Map<String, dynamic> srcset;
   final String profile;
+  String uid;
+  String accesstoken;
+  String client;
 
   User.from(Map<String, dynamic> data)
       : this(

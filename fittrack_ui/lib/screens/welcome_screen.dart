@@ -28,16 +28,25 @@ class _WelComeScreenState extends State<WelComeScreen> {
   //Todo 3. _isNeedSigninの処理
   //Todo 4. _isNeedHealthの処理
   move() async {
-    var url = Uri.parse('http://localhost:3000/api/v1/auth/');
+    var url = Uri.parse('http://localhost:3000/api/v1/auth/sign_in');
     var response = await http.post(url, body: {
-      'email': 'doodle@example.com',
+      'email': 'example2@example.com',
       'password': 'password',
       "password_confirmation": 'password'
     });
     print('Response status: ${response.statusCode}');
-    print('Response body: ${response.body}');
+    print('Response body: ${response.headers}');
     // sharedPreferenceのインスタンスを保存しておく
-    // UserStore().prefs = await SharedPreferences.getInstance();
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString('uid', response.headers["uid"]);
+    prefs.setString('accesstoken', response.headers["access-token"]);
+    prefs.setString('client', response.headers["client"]);
+    String uid = prefs.getString('uid') ?? '';
+    String accesstoken = prefs.getString('accesstoken') ?? '';
+    String client = prefs.getString('client') ?? '';
+    print(uid);
+    print(accesstoken);
+    print(client);
     //アプリを開いたことをAnalyticsにログする
     // AppAnalytics.logAppOpen();
     // Future.wait([
@@ -47,7 +56,7 @@ class _WelComeScreenState extends State<WelComeScreen> {
     //     _isNeedUpdate = isNeed;
     //   }),
     // ]).whenComplete(() {
-    //   if ((UserStore().session ?? '').isNotEmpty) {  
+    //   if ((UserStore().session ?? '').isNotEmpty) {
     //     // session取得済みの場合
     //     // ユーザ情報を取得してstoreに設定
     //     User.getCurrentUser(withSetStore: true).then((User user) async {

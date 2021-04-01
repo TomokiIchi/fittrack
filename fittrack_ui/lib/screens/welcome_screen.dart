@@ -23,30 +23,23 @@ class _WelComeScreenState extends State<WelComeScreen> {
     move();
   }
 
-  //Todo 1. SharedPrefferenceの初期化、データ保持
   //Todo 2. _isNeedUpdateの処理
   //Todo 3. _isNeedSigninの処理
   //Todo 4. _isNeedHealthの処理
   move() async {
-    var url = Uri.parse('http://localhost:3000/api/v1/auth/sign_in');
-    var response = await http.post(url, body: {
-      'email': 'example2@example.com',
-      'password': 'password',
-      "password_confirmation": 'password'
-    });
-    print('Response status: ${response.statusCode}');
-    print('Response body: ${response.headers}');
-    // sharedPreferenceのインスタンスを保存しておく
+    //初期処理としてやることは3つ
+    //ログインしているか？（Local Strageのuid,access-token,clientを使ってエラーが返ってこないか？）
+    //生体データを同期しているか？（Local Strageに_isNeedHealthDataSyncというフラグを作り、デバイスごとに同期済みか判定している）
+    //ログインしている場合→生体データ同期へ（生体データ動機済みの場合Homeへ）遷移する
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString('uid', response.headers["uid"]);
-    prefs.setString('accesstoken', response.headers["access-token"]);
-    prefs.setString('client', response.headers["client"]);
     String uid = prefs.getString('uid') ?? '';
     String accesstoken = prefs.getString('accesstoken') ?? '';
     String client = prefs.getString('client') ?? '';
+    String expiry = prefs.getString('expiry') ?? '';
     print(uid);
     print(accesstoken);
     print(client);
+    print(expiry);
     //アプリを開いたことをAnalyticsにログする
     // AppAnalytics.logAppOpen();
     // Future.wait([

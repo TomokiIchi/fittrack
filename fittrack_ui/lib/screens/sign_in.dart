@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:fittrack_ui/model/user.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 // import 'package:flutter_dotenv/flutter_dotenv.dart';
 // import 'package:tabica_app/store/user_store.dart';
 // import 'package:url_launcher/url_launcher.dart';
@@ -531,7 +532,17 @@ class SignInButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final SigninMessage message =
         Provider.of<SigninMessage>(context, listen: false);
-    return AppButton.withSize("ログイン", onPressed: () {
+    return AppButton.withSize("ログイン", onPressed: () async {
+      var url = Uri.parse('http://localhost:3000/api/v1/auth/sign_in');
+      var response = await http.post(url, body: {
+        'email': mailEditingController.text,
+        'password': passEditingController.text,
+        "password_confirmation": passEditingController.text
+      });
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.setString('uid', response.headers["uid"]);
+      prefs.setString('accesstoken', response.headers["access-token"]);
+      prefs.setString('client', response.headers["client"]);
       Navigator.pushReplacementNamed(context, '/home');
       // final MutationOptions options = MutationOptions(
       //   documentNode: gql(AppMutation.signInUserMutation()),
@@ -580,14 +591,33 @@ class SignupButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final SigninMessage message =
         Provider.of<SigninMessage>(context, listen: false);
-    return AppButton.withSize("登録する", onPressed: () {
-      var url = Uri.parse('http://localhost:3000/api/v1/auth/');
-      var response = http.post(url, body: {
-        'email': mailEditingController.text,
-        'password': passEditingController.text,
-        "password_confirmation": passEditingController.text
-      });
-      Navigator.pushReplacementNamed(context, '/home');
+    return AppButton.withSize("登録する", onPressed: () async {
+      try {
+        var url = Uri.parse('http://localhost:3000/api/v1/auth/');
+        var response = await http.post(url, body: {
+          'email': mailEditingController.text,
+          'password': passEditingController.text,
+          "password_confirmation": passEditingController.text
+        });
+        if (response.headers) {
+          message.setMessage();
+        } else if (response == null ||
+            response.data["signUpUserMutation"]["success"] == false) {
+          // ここは通らないかもしれなが念の為
+          message.setMessage("入力内容を確認してください");
+        } else {
+          final SharedPreferences prefs = await SharedPreferences.getInstance();
+          prefs.setString('uid', response.headers["uid"]);
+          prefs.setString('accesstoken', response.headers["access-token"]);
+          prefs.setString('client', response.headers["client"]);
+          prefs.setString('expiry', response.headers["expiry"]);
+
+          Navigator.pushReplacementNamed(context, '/home');
+        }
+      } catch (e) {
+        message.setMessage("エラーが発生しました");
+      }
+
       //   final MutationOptions options = MutationOptions
       //     documentNode: gql(AppMutation.signUpUserMutation()),
       //     variables: <String, dynamic>{

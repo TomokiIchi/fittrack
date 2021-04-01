@@ -11,6 +11,7 @@ class User {
   String uid;
   String accesstoken;
   String client;
+  bool _isNeedHealthDataSync;
 
   User.from(Map<String, dynamic> data)
       : this(
@@ -31,6 +32,9 @@ class User {
     this.signedInAt,
     this.srcset,
     this.profile,
+    this.uid,
+    this.accesstoken,
+    this.client,
   });
 
   // --------------------------------

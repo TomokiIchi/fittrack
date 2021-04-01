@@ -51,6 +51,7 @@ class _MyHomePageState extends State<MyHomePage> {
     _dates.add(null);
 
     hasPermissions();
+    read();
   }
 
   Future<void> read() async {

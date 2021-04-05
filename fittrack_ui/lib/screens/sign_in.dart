@@ -533,45 +533,30 @@ class SignInButton extends StatelessWidget {
     final SigninMessage message =
         Provider.of<SigninMessage>(context, listen: false);
     return AppButton.withSize("ログイン", onPressed: () async {
-      var url = Uri.parse('http://localhost:3000/api/v1/auth/sign_in');
-      var response = await http.post(url, body: {
-        'email': mailEditingController.text,
-        'password': passEditingController.text,
-        "password_confirmation": passEditingController.text
-      });
-      final SharedPreferences prefs = await SharedPreferences.getInstance();
-      prefs.setString('uid', response.headers["uid"]);
-      prefs.setString('accesstoken', response.headers["access-token"]);
-      prefs.setString('client', response.headers["client"]);
-      Navigator.pushReplacementNamed(context, '/home');
-      // final MutationOptions options = MutationOptions(
-      //   documentNode: gql(AppMutation.signInUserMutation()),
-      //   variables: <String, dynamic>{
-      //     'mail': mailEditingController.text,
-      //     'password': passEditingController.text,
-      //   },
-      // );
-      // AppClient()
-      //     .client(needSession: false)
-      //     .mutate(options)
-      //     .then((QueryResult result) async {
-      //   if (result.hasException) {
-      //     message.setMessage(StringUtil.buildGraphQLErrorMessage(result));
-      //   } else if (result.data == null ||
-      //       result.data["signInUserMutation"]["success"] == false) {
-      //     // ここは通らないかもしれなが念の為
-      //     message.setMessage("入力内容を確認してください");
-      //   } else {
-      //     //　セッション保存
-      //     UserStore().session = result.data["signInUserMutation"]["session"];
-      //     // ユーザ情報を取得しておく
-      //     await User.getCurrentUser(withSetStore: true);
-      //     // 画面遷移
-      //     SignInDispatcher.screenTransition(context);
-      //   }
-      // }).catchError((err) {
-      //   message.setMessage("エラーが発生しました");
-      // });
+      try {
+        var url = Uri.parse('http://localhost:3000/api/v1/auth/sign_in');
+        var response = await http.post(url, body: {
+          'email': mailEditingController.text,
+          'password': passEditingController.text,
+        });
+        if (response.statusCode != 201 && response.statusCode != 200) {
+          message.setMessage(
+              'Request failed with status: ${response.statusCode}.');
+        } else if (response == null) {
+          // ここは通らないかもしれなが念の為
+          message.setMessage("入力内容を確認してください");
+        } else {
+          final SharedPreferences prefs = await SharedPreferences.getInstance();
+          prefs.setString('uid', response.headers["uid"]);
+          prefs.setString('accesstoken', response.headers["access-token"]);
+          prefs.setString('client', response.headers["client"]);
+          prefs.setString('expiry', response.headers["expiry"]);
+
+          Navigator.pushReplacementNamed(context, '/home');
+        }
+      } catch (e) {
+        message.setMessage("エラーが発生しました");
+      }
     });
   }
 }
@@ -599,10 +584,10 @@ class SignupButton extends StatelessWidget {
           'password': passEditingController.text,
           "password_confirmation": passEditingController.text
         });
-        if (response.headers) {
-          message.setMessage();
-        } else if (response == null ||
-            response.data["signUpUserMutation"]["success"] == false) {
+        if (response.statusCode != 201 && response.statusCode != 200) {
+          message.setMessage(
+              'Request failed with status: ${response.statusCode}.');
+        } else if (response == null) {
           // ここは通らないかもしれなが念の為
           message.setMessage("入力内容を確認してください");
         } else {
@@ -617,38 +602,6 @@ class SignupButton extends StatelessWidget {
       } catch (e) {
         message.setMessage("エラーが発生しました");
       }
-
-      //   final MutationOptions options = MutationOptions
-      //     documentNode: gql(AppMutation.signUpUserMutation()),
-      //     variables: <String, dynamic>{
-      //       "authType": "password",
-      //       "mail": mailEditingController.text,
-      //       "password": passEditingController.text,
-      //       "nickname": nicknameEditingController.text
-      //     },
-      //   );
-
-      //   AppClient()
-      //       .client(needSession: false)
-      //       .mutate(options)
-      //       .then((QueryResult result) async {
-      //     if (result.hasException) {
-      //       message.setMessage(StringUtil.buildGraphQLErrorMessage(result));
-      //     } else if (result.data == null ||
-      //         result.data["signUpUserMutation"]["success"] == false) {
-      //       // ここは通らないかもしれなが念の為
-      //       message.setMessage("入力内容を確認してください");
-      //     } else {
-      //       //　セッション保存
-      //       UserStore().session = result.data["signUpUserMutation"]["session"];
-      //       // ユーザ情報を取得しておく
-      //       await User.getCurrentUser(withSetStore: true);
-      //       // 画面遷移
-      //       SignInDispatcher.screenTransition(context);
-      //     }
-      //   }).catchError((err) {
-      //     message.setMessage("エラーが発生しました");
-      //   });
     });
   }
 }

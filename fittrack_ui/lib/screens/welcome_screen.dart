@@ -1,4 +1,3 @@
-import 'dart:ui';
 import 'dart:async';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/material.dart';
@@ -36,10 +35,8 @@ class _WelComeScreenState extends State<WelComeScreen> {
     String accesstoken = prefs.getString('accesstoken') ?? '';
     String client = prefs.getString('client') ?? '';
     String expiry = prefs.getString('expiry') ?? '';
-    print(uid);
-    print(accesstoken);
-    print(client);
-    print(expiry);
+    await _delay();
+    Navigator.pushReplacementNamed(context, '/home');
     //アプリを開いたことをAnalyticsにログする
     // AppAnalytics.logAppOpen();
     // Future.wait([
@@ -94,11 +91,7 @@ class _WelComeScreenState extends State<WelComeScreen> {
               left: (windowWidth - logoWidth) / 2,
               top: windowHeight / 2 - (logoHeight / 1.35), // 1.35は微調整のため
               width: logoWidth,
-              child: InkWell(
-                child: Image.asset('assets/images/logo.png'),
-                onTap: () =>
-                    Navigator.pushReplacementNamed(context, '/sign_in'),
-              ),
+              child: Image.asset('assets/images/logo.png'),
             ),
           ],
         ),

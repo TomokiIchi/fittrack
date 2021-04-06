@@ -27,31 +27,22 @@ class _MyHomePageState extends State<MyHomePage> {
   Map<DataType, List<FitData>> results = Map();
   bool permissions;
 
-  RangeValues _dateRange = RangeValues(1, 8);
-  List<DateTime> _dates = List<DateTime>();
-  double _limitRange = 0;
-
-  DateTime get _dateFrom => _dates[_dateRange.start.round()];
-  DateTime get _dateTo => _dates[_dateRange.end.round()];
-  int get _limit => _limitRange == 0.0 ? null : _limitRange.round();
-
   @override
   void initState() {
     super.initState();
 
-    final now = DateTime.now();
-    _dates.add(null);
-    for (int i = 7; i >= 0; i--) {
-      _dates.add(DateTime(
-        now.year,
-        now.month,
-        now.day,
-      ).subtract(Duration(days: i)));
-    }
-    _dates.add(null);
-
     hasPermissions();
     read();
+    print(results['DataType.HEART_RATE']);
+    print(results['DataType.STEP_COUNT']);
+    print(results['DataType.HEIGHT']);
+    print(results['DataType.WEIGHT']);
+    print(results['DataType.DISTANCE']);
+    print(results['DataType.ENERGY']);
+    print(results['DataType.WATER']);
+    print(results['DataType.SLEEP']);
+    print(results['DataType.STANDIME']);
+    print(results['DataType.EXERCISE_TIME']);
   }
 
   Future<void> read() async {
@@ -66,15 +57,14 @@ class _MyHomePageState extends State<MyHomePage> {
           try {
             results[type] = await FitKit.read(
               type,
-              dateFrom: _dateFrom,
-              dateTo: _dateTo,
-              limit: _limit,
+              dateFrom: DateTime.now().subtract(Duration(days: 7)),
+              dateTo: DateTime.now(),
+              // limit: _limit,
             );
           } on UnsupportedException catch (e) {
             results[e.dataType] = [];
           }
         }
-
         result = 'readAll: success';
       }
     } catch (e) {

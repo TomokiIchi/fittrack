@@ -2,7 +2,6 @@ import 'package:fittrack_ui/screens/home_screen.dart';
 import 'package:fittrack_ui/screens/sign_in.dart';
 import 'package:fittrack_ui/screens/welcome_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:fittrack_ui/utisl.dart';
 import 'screens/welcome_screen.dart';
 

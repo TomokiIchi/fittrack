@@ -533,8 +533,9 @@ class SignInButton extends StatelessWidget {
         Provider.of<SigninMessage>(context, listen: false);
     return AppButton.withSize("ログイン", onPressed: () async {
       try {
+        Map<String, String> headers = {"Content-type": "application/json"};
         var url = Uri.parse('http://localhost:3000/api/v1/auth/sign_in');
-        var response = await http.post(url, body: {
+        var response = await http.post(url, headers: headers, body: {
           'email': mailEditingController.text,
           'password': passEditingController.text,
         });
@@ -577,8 +578,9 @@ class SignupButton extends StatelessWidget {
         Provider.of<SigninMessage>(context, listen: false);
     return AppButton.withSize("登録する", onPressed: () async {
       try {
+        Map<String, String> headers = {"Content-type": "application/json"};
         var url = Uri.parse('http://localhost:3000/api/v1/auth/');
-        var response = await http.post(url, body: {
+        var response = await http.post(url, headers: headers, body: {
           'email': mailEditingController.text,
           'password': passEditingController.text,
           "password_confirmation": passEditingController.text
@@ -595,6 +597,7 @@ class SignupButton extends StatelessWidget {
           prefs.setString('accesstoken', response.headers["access-token"]);
           prefs.setString('client', response.headers["client"]);
           prefs.setString('expiry', response.headers["expiry"]);
+          prefs.setBool('_isNeedHealthDataSync', true);
 
           Navigator.pushReplacementNamed(context, '/home');
         }

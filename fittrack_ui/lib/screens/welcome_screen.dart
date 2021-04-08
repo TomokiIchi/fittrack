@@ -35,7 +35,9 @@ class _WelComeScreenState extends State<WelComeScreen> {
     String accesstoken = prefs.getString('accesstoken') ?? '';
     String client = prefs.getString('client') ?? '';
     String expiry = prefs.getString('expiry') ?? '';
+    _isNeedHealth = prefs.getBool('_isNeedHealthDataSync') ?? false;
     await _delay();
+
     Navigator.pushReplacementNamed(context, '/home');
     //アプリを開いたことをAnalyticsにログする
     // AppAnalytics.logAppOpen();

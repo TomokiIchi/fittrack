@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:fittrack_ui/utisl.dart';
 import 'dart:async';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:fit_kit/fit_kit.dart';
 
 enum AppState {
@@ -30,19 +31,8 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     super.initState();
-
     hasPermissions();
     read();
-    print(results['DataType.HEART_RATE']);
-    print(results['DataType.STEP_COUNT']);
-    print(results['DataType.HEIGHT']);
-    print(results['DataType.WEIGHT']);
-    print(results['DataType.DISTANCE']);
-    print(results['DataType.ENERGY']);
-    print(results['DataType.WATER']);
-    print(results['DataType.SLEEP']);
-    print(results['DataType.STANDIME']);
-    print(results['DataType.EXERCISE_TIME']);
   }
 
   Future<void> read() async {
@@ -53,13 +43,15 @@ class _MyHomePageState extends State<MyHomePage> {
       if (!permissions) {
         result = 'requestPermissions: failed';
       } else {
+        final SharedPreferences prefs = await SharedPreferences.getInstance();
+        prefs.setBool('_isNeedHealthDataSync', false);
         for (DataType type in DataType.values) {
           try {
             results[type] = await FitKit.read(
               type,
               dateFrom: DateTime.now().subtract(Duration(days: 7)),
               dateTo: DateTime.now(),
-              // limit: _limit,
+              limit: null,
             );
           } on UnsupportedException catch (e) {
             results[e.dataType] = [];
@@ -76,7 +68,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Future<void> revokePermissions() async {
     results.clear();
-
     try {
       await FitKit.revokePermissions();
       permissions = await FitKit.hasPermissions(DataType.values);
@@ -262,6 +253,8 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   _buildNextAppointmentTitle() {
+    final items =
+        results.entries.expand((entry) => [entry.key, ...entry.value]).toList();
     return Container(
       margin: EdgeInsets.only(top: 20.0, bottom: 20.0),
       child: Row(
@@ -273,7 +266,16 @@ class _MyHomePageState extends State<MyHomePage> {
               'See All',
               style: nextAppointmentSubTitleStyle,
             ),
-            onTap: () => Navigator.of(context).pushNamed('/login'),
+            onTap: () {
+              print(items.length);
+              for (var item in items) {
+                if (item is DataType) {
+                  print("$item \n");
+                } else {
+                  print(item);
+                }
+              }
+            },
           ),
         ],
       ),
@@ -405,6 +407,8 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
     );
   }
+
+  _buildProfileTitle() {}
 
   void onTapped(int value) {
     setState(() {

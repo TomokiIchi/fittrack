@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:fittrack_ui/utisl.dart';
 import 'dart:async';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:fit_kit/fit_kit.dart';
 
 enum AppState {
@@ -43,8 +42,6 @@ class _MyHomePageState extends State<MyHomePage> {
       if (!permissions) {
         result = 'requestPermissions: failed';
       } else {
-        final SharedPreferences prefs = await SharedPreferences.getInstance();
-        prefs.setBool('_isNeedHealthDataSync', false);
         for (DataType type in DataType.values) {
           try {
             results[type] = await FitKit.read(

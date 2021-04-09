@@ -12,7 +12,6 @@ class User {
   String accesstoken;
   String client;
   int expiry;
-  bool _isNeedHealthDataSync;
 
   User.from(Map<String, dynamic> data)
       : this(

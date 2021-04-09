@@ -2,7 +2,6 @@ import 'package:fittrack_ui/utisl.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:fittrack_ui/model/user.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 // import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -596,7 +595,6 @@ class SignupButton extends StatelessWidget {
           prefs.setString('accesstoken', response.headers["access-token"]);
           prefs.setString('client', response.headers["client"]);
           prefs.setString('expiry', response.headers["expiry"]);
-          prefs.setBool('_isNeedHealthDataSync', true);
 
           Navigator.pushReplacementNamed(context, '/home');
         }

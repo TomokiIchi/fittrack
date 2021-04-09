@@ -140,3 +140,12 @@ yarn-debug.log*
 /storage/*
 !/storage/.keep
 /public/uploads
+
+
+FitKit/
+fittrack_server/.ruby-version
+fittrack_ui/.flutter-plugins-dependencies~UserModel
+flutter-plugins/
+flutter_health-master/
+flutter_login/
+google_fit/

@@ -26,6 +26,8 @@
 .pub-cache/
 .pub/
 /build/
+**/fittrack_ui/*.lock
+**/fittrack_ui/.flutter-plugins-dependencies
 
 # Android related
 **/android/**/gradle-wrapper.jar
@@ -83,8 +85,8 @@ rerun.txt
 pickle-email-*.html
 
 # Ignore all logfiles and tempfiles.
-/log/*
-/tmp/*
+fittrack_server/log/*
+fittrack_server/tmp/*
 !/log/.keep
 !/tmp/.keep
 

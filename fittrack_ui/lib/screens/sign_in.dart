@@ -533,9 +533,8 @@ class SignInButton extends StatelessWidget {
         Provider.of<SigninMessage>(context, listen: false);
     return AppButton.withSize("ログイン", onPressed: () async {
       try {
-        Map<String, String> headers = {"Content-type": "application/json"};
         var url = Uri.parse('http://localhost:3000/api/v1/auth/sign_in');
-        var response = await http.post(url, headers: headers, body: {
+        var response = await http.post(url, body: {
           'email': mailEditingController.text,
           'password': passEditingController.text,
         });

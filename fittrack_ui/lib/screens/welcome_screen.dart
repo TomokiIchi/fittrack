@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -15,7 +16,7 @@ class _WelComeScreenState extends State<WelComeScreen> {
   bool _isNeedUpdate = false;
   bool _isNeedSignin = false;
   bool _isNeedHealth = false;
-
+  final now = DateTime.now().toUtc().millisecondsSinceEpoch;
   @override
   initState() {
     super.initState();
@@ -26,52 +27,24 @@ class _WelComeScreenState extends State<WelComeScreen> {
   //Todo 3. _isNeedSigninの処理
   //Todo 4. _isNeedHealthの処理
   move() async {
-    //初期処理としてやることは3つ
+    //初期処理としてやることは1つ
     //ログインしているか？（Local Strageのuid,access-token,clientを使ってエラーが返ってこないか？）
-    //生体データを同期しているか？（Local Strageに_isNeedHealthDataSyncというフラグを作り、デバイスごとに同期済みか判定している）
-    //ログインしている場合→生体データ同期へ（生体データ動機済みの場合Homeへ）遷移する
+    //ログインしている場合→生体データ同期へ（Homeへ）遷移する
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    String uid = prefs.getString('uid') ?? '';
-    String accesstoken = prefs.getString('accesstoken') ?? '';
-    String client = prefs.getString('client') ?? '';
     String expiry = prefs.getString('expiry') ?? '';
-    _isNeedHealth = prefs.getBool('_isNeedHealthDataSync') ?? false;
-    await _delay();
-
-    Navigator.pushReplacementNamed(context, '/home');
-    //アプリを開いたことをAnalyticsにログする
-    // AppAnalytics.logAppOpen();
-    // Future.wait([
-    //   _delay(),
-    //   //APIのバージョンをチェック
-    //   ApiVersionChecker.isNeedUpadate().then((isNeed) {
-    //     _isNeedUpdate = isNeed;
-    //   }),
-    // ]).whenComplete(() {
-    //   if ((UserStore().session ?? '').isNotEmpty) {
-    //     // session取得済みの場合
-    //     // ユーザ情報を取得してstoreに設定
-    //     User.getCurrentUser(withSetStore: true).then((User user) async {
-    //       if (user == null) {
-    //         // ユーザ情報が取れない場合
-    //         // sessionが切れている / ユーザ削除 など？
-    //         UserStore.clearSession();
-    //         Navigator.pushReplacementNamed(context, '/home');
-    //       } else {
-    //         Navigator.pushReplacementNamed(context, '/home');
-    //       }
-    //     });
-    //   } else if (_isNeedUpdate) {
-    //     showDialog(
-    //         barrierDismissible: false,
-    //         context: context,
-    //         builder: (context) => Material(
-    //             type: MaterialType.transparency, child: ApiUpdateDialog()));
-    //   } else {
-    //     // ログインしていない場合でもHOMEに遷移
-    //     Navigator.pushReplacementNamed(context, '/home');
-    //   }
-    // });
+    if (expiry.isEmpty) {
+      await _delay();
+      Navigator.pushReplacementNamed(context, '/sign_in');
+    } else {
+      final expiry_date_microunixtime = int.parse(expiry) * 1000;
+      if (expiry_date_microunixtime <= now) {
+        await _delay();
+        Navigator.pushReplacementNamed(context, '/sign_in');
+      } else {
+        await _delay();
+        Navigator.pushReplacementNamed(context, '/home');
+      }
+    }
   }
 
   @override

@@ -36,7 +36,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Future<void> read() async {
     results.clear();
-
     try {
       permissions = await FitKit.requestPermissions(DataType.values);
       if (!permissions) {
@@ -82,9 +81,7 @@ class _MyHomePageState extends State<MyHomePage> {
     } catch (e) {
       result = 'hasPermissions: $e';
     }
-
     if (!mounted) return;
-
     setState(() {});
   }
 
@@ -106,7 +103,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    // _buildNotificationCard(),
+                    _buildNotificationCard(),
                     _buildNextAppointmentTitle(),
                     _buildNextAppointmentInfo(),
                     //Todo 取得したアカウント情報を以下の２つで表示
@@ -231,7 +228,7 @@ class _MyHomePageState extends State<MyHomePage> {
           size: 32,
         ),
         title: Text(
-          'Heart Rate $_selectedIndex',
+          'Result $results',
           style: notificationTitleStyle,
         ),
         trailing: OutlineButton(
@@ -410,6 +407,7 @@ class _MyHomePageState extends State<MyHomePage> {
   void onTapped(int value) {
     setState(() {
       _selectedIndex = value;
+      print(results);
     });
   }
 }

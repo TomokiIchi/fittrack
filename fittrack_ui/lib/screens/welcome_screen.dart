@@ -1,8 +1,6 @@
 import 'dart:async';
-import 'dart:math';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 
 class WelComeScreen extends StatefulWidget {
   @override
@@ -13,9 +11,6 @@ class _WelComeScreenState extends State<WelComeScreen> {
   //ログインチェックを_isNeedSignin、ヘルスデータの同期チェックを_isNeedHealthとする（0が必要なし、1が必要あり）
   _WelComeScreenState();
 
-  bool _isNeedUpdate = false;
-  bool _isNeedSignin = false;
-  bool _isNeedHealth = false;
   final now = DateTime.now().toUtc().millisecondsSinceEpoch;
   @override
   initState() {
@@ -23,9 +18,6 @@ class _WelComeScreenState extends State<WelComeScreen> {
     move();
   }
 
-  //Todo 2. _isNeedUpdateの処理
-  //Todo 3. _isNeedSigninの処理
-  //Todo 4. _isNeedHealthの処理
   move() async {
     //初期処理としてやることは1つ
     //ログインしているか？（Local Strageのuid,access-token,clientを使ってエラーが返ってこないか？）

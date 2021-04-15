@@ -4,9 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
-// import 'package:flutter_dotenv/flutter_dotenv.dart';
-// import 'package:tabica_app/store/user_store.dart';
-// import 'package:url_launcher/url_launcher.dart';
 
 class SignIn extends StatefulWidget {
   final SignInType signInType;

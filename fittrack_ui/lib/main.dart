@@ -1,3 +1,4 @@
+import 'package:fittrack_ui/screens/data_screen.dart';
 import 'package:fittrack_ui/screens/home_screen.dart';
 import 'package:fittrack_ui/screens/sign_in.dart';
 import 'package:fittrack_ui/screens/welcome_screen.dart';
@@ -45,6 +46,7 @@ class MyApp extends StatelessWidget {
         '/': (BuildContext context) => WelComeScreen(),
         '/home': (BuildContext context) => MyHomePage(),
         '/sign_in': (BuildContext context) => SignIn(),
+        '/data': (BuildContext context) => DataPage(),
       },
     );
   }

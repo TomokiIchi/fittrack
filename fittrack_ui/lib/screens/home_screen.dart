@@ -262,6 +262,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             onTap: () {
               print(items.length);
+              Navigator.pushReplacementNamed(context, '/data');
               for (var item in items) {
                 if (item is DataType) {
                   print("$item \n");

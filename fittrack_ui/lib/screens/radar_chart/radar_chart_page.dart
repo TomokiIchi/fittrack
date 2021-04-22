@@ -1,4 +1,5 @@
-import 'package:example/radar_chart/samples/radar_chart_sample1.dart';
+import 'package:fittrack_ui/screens/radar_chart/samples/radar_chart_sample1.dart';
+
 import 'package:flutter/material.dart';
 
 class RadarChartPage extends StatelessWidget {

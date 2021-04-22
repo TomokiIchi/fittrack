@@ -1,8 +1,16 @@
+import 'radar_chart/radar_chart_page.dart';
+import 'scatter_chart/scatter_chart_page.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_sparkline/flutter_sparkline.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:flutter_circular_chart/flutter_circular_chart.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
+import 'bar_chart/bar_chart_page.dart';
+import 'bar_chart/bar_chart_page2.dart';
+import 'line_chart/line_chart_page.dart';
+import 'line_chart/line_chart_page2.dart';
+import 'line_chart/line_chart_page3.dart';
+import 'line_chart/line_chart_page4.dart';
+import 'pie_chart/pie_chart_page.dart';
+import 'scatter_chart/scatter_chart_page.dart';
 
 class DataPage extends StatefulWidget {
   @override
@@ -10,298 +18,72 @@ class DataPage extends StatefulWidget {
 }
 
 class _DataPageState extends State<DataPage> {
-  var data = [0.0, 1.0, 1.5, 2.0, 0.0, 0.0, -0.5, -1.0, -0.5, 0.0, 0.0];
-  var data1 = [0.0, -2.0, 3.5, -2.0, 0.5, 0.7, 0.8, 1.0, 2.0, 3.0, 3.2];
+  int _currentPage = 0;
 
-  List<CircularStackEntry> circularData = <CircularStackEntry>[
-    new CircularStackEntry(
-      <CircularSegmentEntry>[
-        new CircularSegmentEntry(700.0, Color(0xff4285F4), rankKey: 'Q1'),
-        new CircularSegmentEntry(1000.0, Color(0xfff3af00), rankKey: 'Q2'),
-        new CircularSegmentEntry(1800.0, Color(0xffec3337), rankKey: 'Q3'),
-        new CircularSegmentEntry(1000.0, Color(0xff40b24b), rankKey: 'Q4'),
-      ],
-      rankKey: 'Quarterly Profits',
-    ),
+  final _controller = PageController(initialPage: 0);
+  final _duration = Duration(milliseconds: 300);
+  final _curve = Curves.easeInOutCubic;
+  final _pages = [
+    LineChartPage(),
+    BarChartPage(),
+    BarChartPage2(),
+    PieChartPage(),
+    LineChartPage2(),
+    LineChartPage3(),
+    LineChartPage4(),
+    ScatterChartPage(),
+    RadarChartPage(),
   ];
 
-  Material myTextItems(String title, String subtitle) {
-    return Material(
-      color: Colors.white,
-      elevation: 14.0,
-      borderRadius: BorderRadius.circular(24.0),
-      shadowColor: Color(0x802196F3),
-      child: Center(
-        child: Padding(
-          padding: EdgeInsets.all(8.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: Text(
-                      title,
-                      style: TextStyle(
-                        fontSize: 20.0,
-                        color: Colors.blueAccent,
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: Text(
-                      subtitle,
-                      style: TextStyle(
-                        fontSize: 30.0,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Material myCircularItems(String title, String subtitle) {
-    return Material(
-      color: Colors.white,
-      elevation: 14.0,
-      borderRadius: BorderRadius.circular(24.0),
-      shadowColor: Color(0x802196F3),
-      child: Center(
-        child: Padding(
-          padding: EdgeInsets.all(8.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: Text(
-                      title,
-                      style: TextStyle(
-                        fontSize: 20.0,
-                        color: Colors.blueAccent,
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: Text(
-                      subtitle,
-                      style: TextStyle(
-                        fontSize: 30.0,
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: AnimatedCircularChart(
-                      size: const Size(100.0, 100.0),
-                      initialChartData: circularData,
-                      chartType: CircularChartType.Pie,
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Material mychart1Items(String title, String priceVal, String subtitle) {
-    return Material(
-      color: Colors.white,
-      elevation: 14.0,
-      borderRadius: BorderRadius.circular(24.0),
-      shadowColor: Color(0x802196F3),
-      child: Center(
-        child: Padding(
-          padding: EdgeInsets.all(8.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Padding(
-                    padding: EdgeInsets.all(1.0),
-                    child: Text(
-                      title,
-                      style: TextStyle(
-                        fontSize: 20.0,
-                        color: Colors.blueAccent,
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.all(1.0),
-                    child: Text(
-                      priceVal,
-                      style: TextStyle(
-                        fontSize: 30.0,
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.all(1.0),
-                    child: Text(
-                      subtitle,
-                      style: TextStyle(
-                        fontSize: 20.0,
-                        color: Colors.blueGrey,
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.all(1.0),
-                    child: new Sparkline(
-                      data: data,
-                      lineColor: Color(0xffff6101),
-                      pointsMode: PointsMode.all,
-                      pointSize: 8.0,
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Material mychart2Items(String title, String priceVal, String subtitle) {
-    return Material(
-      color: Colors.white,
-      elevation: 14.0,
-      borderRadius: BorderRadius.circular(24.0),
-      shadowColor: Color(0x802196F3),
-      child: Center(
-        child: Padding(
-          padding: EdgeInsets.all(8.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Padding(
-                    padding: EdgeInsets.all(1.0),
-                    child: Text(
-                      title,
-                      style: TextStyle(
-                        fontSize: 20.0,
-                        color: Colors.blueAccent,
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.all(1.0),
-                    child: Text(
-                      priceVal,
-                      style: TextStyle(
-                        fontSize: 30.0,
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.all(1.0),
-                    child: Text(
-                      subtitle,
-                      style: TextStyle(
-                        fontSize: 20.0,
-                        color: Colors.blueGrey,
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.all(1.0),
-                    child: new Sparkline(
-                      data: data1,
-                      fillMode: FillMode.below,
-                      fillGradient: new LinearGradient(
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        colors: [Colors.amber[800], Colors.amber[200]],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
+  @override
+  void initState() {
+    _controller.addListener(() {
+      setState(() {
+        _currentPage = _controller.page.round();
+      });
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-            icon: Icon(Icons.menu),
-            onPressed: () {
-              //
-            }),
-        title: Text('Data Detail'),
-        actions: <Widget>[
-          IconButton(
-              icon: Icon(FontAwesomeIcons.chartLine),
-              onPressed: () {
-                //
-              }),
-        ],
-      ),
-      body: Container(
-        color: Color(0xffE5E5E5),
-        child: StaggeredGridView.count(
-          crossAxisCount: 4,
-          crossAxisSpacing: 12.0,
-          mainAxisSpacing: 12.0,
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child:
-                  mychart1Items("Sales by Month", "421.3M", "+12.9% of target"),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: myCircularItems("Quarterly Profits", "68.7M"),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(right: 8.0),
-              child: myTextItems("Mktg. Spend", "48.6M"),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(right: 8.0),
-              child: myTextItems("Users", "25.5M"),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: mychart2Items("Conversion", "0.9M", "+19% of target"),
-            ),
-          ],
-          staggeredTiles: [
-            StaggeredTile.extent(4, 250.0),
-            StaggeredTile.extent(2, 250.0),
-            StaggeredTile.extent(2, 120.0),
-            StaggeredTile.extent(2, 120.0),
-            StaggeredTile.extent(4, 250.0),
-          ],
+      body: SafeArea(
+        child: PageView(
+          physics: kIsWeb
+              ? NeverScrollableScrollPhysics()
+              : AlwaysScrollableScrollPhysics(),
+          controller: _controller,
+          children: _pages,
         ),
       ),
+      bottomNavigationBar: kIsWeb
+          ? Container(
+              padding: EdgeInsets.all(16),
+              color: Colors.transparent,
+              child: Row(
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  Visibility(
+                    visible: _currentPage != 0,
+                    child: FloatingActionButton(
+                      onPressed: () => _controller.previousPage(
+                          duration: _duration, curve: _curve),
+                      child: Icon(Icons.chevron_left_rounded),
+                    ),
+                  ),
+                  Spacer(),
+                  Visibility(
+                    visible: _currentPage != _pages.length - 1,
+                    child: FloatingActionButton(
+                      onPressed: () => _controller.nextPage(
+                          duration: _duration, curve: _curve),
+                      child: Icon(Icons.chevron_right_rounded),
+                    ),
+                  ),
+                ],
+              ),
+            )
+          : null,
     );
   }
 }

@@ -1,16 +1,8 @@
-import 'radar_chart/radar_chart_page.dart';
-import 'scatter_chart/scatter_chart_page.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-import 'bar_chart/bar_chart_page.dart';
-import 'bar_chart/bar_chart_page2.dart';
-import 'line_chart/line_chart_page.dart';
 import 'line_chart/line_chart_page2.dart';
-import 'line_chart/line_chart_page3.dart';
 import 'line_chart/line_chart_page4.dart';
-import 'pie_chart/pie_chart_page.dart';
-import 'scatter_chart/scatter_chart_page.dart';
 
 class DataPage extends StatefulWidget {
   @override
@@ -24,15 +16,8 @@ class _DataPageState extends State<DataPage> {
   final _duration = Duration(milliseconds: 300);
   final _curve = Curves.easeInOutCubic;
   final _pages = [
-    LineChartPage(),
-    BarChartPage(),
-    BarChartPage2(),
-    PieChartPage(),
     LineChartPage2(),
-    LineChartPage3(),
     LineChartPage4(),
-    ScatterChartPage(),
-    RadarChartPage(),
   ];
 
   @override

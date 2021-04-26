@@ -332,11 +332,6 @@ class _MyHomePageState extends State<MyHomePage> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // CircleAvatar(
-              //   backgroundColor: Colors.grey,
-              //   backgroundImage: NetworkImage(USER_IMAGE),
-              //   radius: 36,
-              // ),
               Icon(
                 LineAwesomeIcons.bed,
                 size: 40,
@@ -362,11 +357,6 @@ class _MyHomePageState extends State<MyHomePage> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // CircleAvatar(
-              //   backgroundColor: Colors.grey,
-              //   backgroundImage: NetworkImage(USER_IMAGE),
-              //   radius: 36,
-              // ),
               Icon(
                 LineAwesomeIcons.map_marker,
                 size: 40,
@@ -390,14 +380,6 @@ class _MyHomePageState extends State<MyHomePage> {
           SizedBox(
             height: 8.0,
           ),
-          // Divider(
-          //   color: Colors.grey[200],
-          //   height: 3.0,
-          //   thickness: 1,
-          // ),
-          // SizedBox(
-          //   height: 8.0,
-          // ),
         ],
       ),
     );

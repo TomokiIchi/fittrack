@@ -26,7 +26,6 @@
 .pub-cache/
 .pub/
 /build/
-**/fittrack_ui/*.lock
 **/fittrack_ui/.flutter-plugins-dependencies
 
 # Android related
@@ -145,7 +144,6 @@ yarn-debug.log*
 FitKit/
 fittrack_server/.ruby-version
 fittrack_ui/.flutter-plugins-dependencies~UserModel
-fittrack_ui/ios/Podfile.lock
 flutter-plugins/
 flutter_health-master/
 flutter_login/

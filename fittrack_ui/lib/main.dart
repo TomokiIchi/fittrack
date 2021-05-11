@@ -6,8 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:fittrack_ui/utisl.dart';
 import 'screens/welcome_screen.dart';
 
-void main() async {
-  // await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+void main() {
   runApp(MyApp());
 }
 

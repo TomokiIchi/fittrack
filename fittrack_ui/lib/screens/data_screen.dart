@@ -1,7 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'line_chart/line_chart_page2.dart';
-import 'line_chart/line_chart_page4.dart';
 
 class DataPage extends StatefulWidget {
   @override
@@ -16,7 +15,6 @@ class _DataPageState extends State<DataPage> {
   final _curve = Curves.easeInOutCubic;
   final _pages = [
     LineChartPage2(),
-    LineChartPage4(),
   ];
 
   @override

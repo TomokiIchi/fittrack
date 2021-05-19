@@ -317,7 +317,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               RichText(
                   text: TextSpan(
-                      text: '心拍数：78 BPM',
+                      text: '心拍数：$result BPM',
                       style: appointmentMainStyle,
                       children: [
                     TextSpan(
@@ -342,7 +342,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               RichText(
                   text: TextSpan(
-                      text: '昨日は7時間37分眠りました',
+                      text: '昨日は$result分眠りました',
                       style: appointmentMainStyle,
                       children: [
                     TextSpan(
@@ -367,7 +367,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               RichText(
                   text: TextSpan(
-                      text: '歩数：6789',
+                      text: '歩数：$result',
                       style: appointmentMainStyle,
                       children: [
                     TextSpan(

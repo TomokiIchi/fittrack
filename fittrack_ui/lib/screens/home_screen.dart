@@ -1,3 +1,4 @@
+import 'package:fittrack_ui/screens/data_screen.dart';
 import 'package:fittrack_ui/style.dart';
 import 'package:fittrack_ui/widgets/moods.dart';
 import 'package:flutter/material.dart';
@@ -262,14 +263,18 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             onTap: () {
               print(items.length);
-              Navigator.pushReplacementNamed(context, '/data');
-              for (var item in items) {
-                if (item is DataType) {
-                  print("$item \n");
-                } else {
-                  print(item);
-                }
-              }
+              // Navigator.pushReplacementNamed(context, '/data');
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => DataPage(items: items)));
+              // for (var item in items) {
+              //   if (item is DataType) {
+              //     print("$item \n");
+              //   } else {
+              //     print(item);
+              //   }
+              // }
             },
           ),
         ],

@@ -116,32 +116,32 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        showSelectedLabels: false,
-        showUnselectedLabels: false,
-        currentIndex: _selectedIndex,
-        items: [
-          BottomNavigationBarItem(
-              icon: Icon(
-                LineAwesomeIcons.home,
-                size: 30.0,
-              ),
-              title: Text('1')),
-          BottomNavigationBarItem(
-              icon: Icon(
-                LineAwesomeIcons.search,
-                size: 30.0,
-              ),
-              title: Text('1')),
-          BottomNavigationBarItem(
-              icon: Icon(
-                LineAwesomeIcons.gratipay,
-                size: 30.0,
-              ),
-              title: Text('1')),
-        ],
-        onTap: onTapped,
-      ),
+      // bottomNavigationBar: BottomNavigationBar(
+      //   showSelectedLabels: false,
+      //   showUnselectedLabels: false,
+      //   currentIndex: _selectedIndex,
+      //   items: [
+      //     BottomNavigationBarItem(
+      //         icon: Icon(
+      //           LineAwesomeIcons.home,
+      //           size: 30.0,
+      //         ),
+      //         title: Text('1')),
+      //     BottomNavigationBarItem(
+      //         icon: Icon(
+      //           LineAwesomeIcons.search,
+      //           size: 30.0,
+      //         ),
+      //         title: Text('1')),
+      //     BottomNavigationBarItem(
+      //         icon: Icon(
+      //           LineAwesomeIcons.gratipay,
+      //           size: 30.0,
+      //         ),
+      //         title: Text('1')),
+      //   ],
+      //   onTap: onTapped,
+      // ),
     );
   }
 
@@ -177,7 +177,7 @@ class _MyHomePageState extends State<MyHomePage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Hi Tomoki',
+            'Hi!',
             style: greetingTitleStyle,
           ),
           SizedBox(
@@ -317,7 +317,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               RichText(
                   text: TextSpan(
-                      text: '心拍数：$result BPM',
+                      text: '心拍数 BPM',
                       style: appointmentMainStyle,
                       children: [
                     TextSpan(
@@ -342,7 +342,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               RichText(
                   text: TextSpan(
-                      text: '昨日は$result分眠りました',
+                      text: '昨日は眠りました',
                       style: appointmentMainStyle,
                       children: [
                     TextSpan(
@@ -367,7 +367,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               RichText(
                   text: TextSpan(
-                      text: '歩数：$result',
+                      text: '歩数：',
                       style: appointmentMainStyle,
                       children: [
                     TextSpan(

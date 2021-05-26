@@ -6,6 +6,7 @@ import 'package:fittrack_ui/utisl.dart';
 import 'dart:async';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:fit_kit/fit_kit.dart';
+import 'dart:convert';
 
 enum AppState {
   DATA_NOT_FETCHED,
@@ -107,7 +108,6 @@ class _MyHomePageState extends State<MyHomePage> {
                     // _buildNotificationCard(),
                     _buildNextAppointmentTitle(),
                     _buildNextAppointmentInfo(),
-                    //Todo 取得したアカウント情報を以下の２つで表示
                     // _buildProfileTitle(),
                     // _buildProfileInfo(),
                   ],
@@ -257,26 +257,25 @@ class _MyHomePageState extends State<MyHomePage> {
         children: [
           Text('Today\'s data', style: nextAppointmentTitleStyle),
           InkWell(
-            child: Text(
-              'See All',
-              style: nextAppointmentSubTitleStyle,
-            ),
-            onTap: () {
-              print(items.length);
-              // Navigator.pushReplacementNamed(context, '/data');
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => DataPage(items: items)));
-              // for (var item in items) {
-              //   if (item is DataType) {
-              //     print("$item \n");
-              //   } else {
-              //     print(item);
-              //   }
-              // }
-            },
-          ),
+              child: Text(
+                'See All',
+                style: nextAppointmentSubTitleStyle,
+              ),
+              onTap: () {
+                print(results.length);
+                print(results.values);
+                // Navigator.pushReplacementNamed(context, '/data');
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => DataPage(items: items)));
+                // for (var item in items) {
+                //   if (item is DataType) {
+                //     print("$item \n");
+                //   } else {
+                // print(item);
+                //   }
+              }),
         ],
       ),
     );
@@ -347,7 +346,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               RichText(
                   text: TextSpan(
-                      text: '昨日は眠りました',
+                      text: '昨日は時間分眠りました',
                       style: appointmentMainStyle,
                       children: [
                     TextSpan(

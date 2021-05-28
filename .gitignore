@@ -151,3 +151,4 @@ google_fit/
 fittrack_ui/apk_key
 CertificateSigningRequest.certSigningRequest
 fittrack_ui/android/keystore.properties
+fittrack_ui/android/app/upload-keystore.jks

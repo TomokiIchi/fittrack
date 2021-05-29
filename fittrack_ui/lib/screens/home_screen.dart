@@ -18,6 +18,7 @@ class _MyHomePageState extends State<MyHomePage> {
   // int _selectedIndex = 0;
   String result = '';
   Map<DataType, List<FitData>> results = Map();
+  final Map<String, List> biometricdata = {};
   bool permissions;
 
   List<DateTime> _dates = [];
@@ -64,6 +65,11 @@ class _MyHomePageState extends State<MyHomePage> {
           }
         }
         result = 'readAll: success';
+        results.forEach((key, value) {
+          if (key is DataType) {
+            biometricdata['$key'] = value;
+          }
+        });
       }
     } catch (e) {
       result = 'readAll: $e';
@@ -270,7 +276,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     context,
                     MaterialPageRoute(
                         builder: (context) =>
-                            DataPage(items: results.values.first)));
+                            DataPage(biometricdata: biometricdata)));
                 // for (var item in items) {
                 //   if (item is DataType) {
                 //     print("$item \n");
@@ -284,12 +290,6 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   _buildNextAppointmentInfo() {
-    final Map<String, List> biometricdata = {};
-    results.forEach((key, value) {
-      if (key is DataType) {
-        biometricdata['$key'] = value;
-      }
-    });
     final heartrate = biometricdata['DataType.HEART_RATE'].last.value.round();
     final heartrate_time = biometricdata['DataType.HEART_RATE'].last.dateTo;
     final steps = biometricdata['DataType.STEP_COUNT'].last.value.round();

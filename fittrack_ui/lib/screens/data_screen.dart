@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:fittrack_ui/style.dart';
 
 class DataPage extends StatelessWidget {
-  final List items;
-  DataPage({this.items});
+  final Map<String, List> biometricdata;
+  DataPage({this.biometricdata});
   _buildBackgroundCover() {
     return Container(
       height: 260.0,

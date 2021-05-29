@@ -7,14 +7,6 @@ import 'dart:async';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:fit_kit/fit_kit.dart';
 
-enum AppState {
-  DATA_NOT_FETCHED,
-  FETCHING_DATA,
-  DATA_READY,
-  NO_DATA,
-  AUTH_NOT_GRANTED
-}
-
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key key}) : super(key: key);
 
@@ -23,16 +15,33 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _selectedIndex = 0;
+  // int _selectedIndex = 0;
   String result = '';
   Map<DataType, List<FitData>> results = Map();
   bool permissions;
 
+  List<DateTime> _dates = [];
+  RangeValues _dateRange = RangeValues(1, 8);
+  double _limitRange = 0;
+
+  DateTime get _dateFrom => _dates[_dateRange.start.round()];
+  DateTime get _dateTo => _dates[_dateRange.end.round()];
+  int get _limit => _limitRange == 0.0 ? null : _limitRange.round();
+
   @override
   void initState() {
     super.initState();
+    final now = DateTime.now();
+    _dates.add(null);
+    for (int i = 7; i >= 0; i--) {
+      _dates.add(DateTime(
+        now.year,
+        now.month,
+        now.day,
+      ).subtract(Duration(days: i)));
+    }
+    _dates.add(null);
     hasPermissions();
-    read();
   }
 
   Future<void> read() async {
@@ -46,9 +55,9 @@ class _MyHomePageState extends State<MyHomePage> {
           try {
             results[type] = await FitKit.read(
               type,
-              dateFrom: DateTime.now().subtract(Duration(days: 7)),
-              dateTo: DateTime.now(),
-              limit: null,
+              dateFrom: _dateFrom,
+              dateTo: _dateTo,
+              limit: _limit,
             );
           } on UnsupportedException catch (e) {
             results[e.dataType] = [];
@@ -59,8 +68,6 @@ class _MyHomePageState extends State<MyHomePage> {
     } catch (e) {
       result = 'readAll: $e';
     }
-
-    setState(() {});
   }
 
   Future<void> revokePermissions() async {
@@ -72,8 +79,6 @@ class _MyHomePageState extends State<MyHomePage> {
     } catch (e) {
       result = 'revokePermissions: $e';
     }
-
-    setState(() {});
   }
 
   Future<void> hasPermissions() async {
@@ -83,64 +88,72 @@ class _MyHomePageState extends State<MyHomePage> {
       result = 'hasPermissions: $e';
     }
     if (!mounted) return;
-    setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
-      body: SingleChildScrollView(
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: <Widget>[
-              _buildTopStack(),
-              SizedBox(
-                height: 60.0,
-              ),
-              Padding(
-                padding: EdgeInsets.all(20),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    // _buildNotificationCard(),
-                    _buildNextAppointmentTitle(),
-                    _buildNextAppointmentInfo(),
-                  ],
+        backgroundColor: Colors.white,
+        body: SingleChildScrollView(
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: <Widget>[
+                _buildTopStack(),
+                SizedBox(
+                  height: 60.0,
                 ),
-              ),
-            ],
+                Padding(
+                  padding: EdgeInsets.all(20),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      // _buildNotificationCard(),
+                      _buildNextAppointmentTitle(),
+                      _buildNextAppointmentInfo(),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
-      ),
-      // bottomNavigationBar: BottomNavigationBar(
-      //   showSelectedLabels: false,
-      //   showUnselectedLabels: false,
-      //   currentIndex: _selectedIndex,
-      //   items: [
-      //     BottomNavigationBarItem(
-      //         icon: Icon(
-      //           LineAwesomeIcons.home,
-      //           size: 30.0,
-      //         ),
-      //         title: Text('1')),
-      //     BottomNavigationBarItem(
-      //         icon: Icon(
-      //           LineAwesomeIcons.search,
-      //           size: 30.0,
-      //         ),
-      //         title: Text('1')),
-      //     BottomNavigationBarItem(
-      //         icon: Icon(
-      //           LineAwesomeIcons.gratipay,
-      //           size: 30.0,
-      //         ),
-      //         title: Text('1')),
-      //   ],
-      //   onTap: onTapped,
-      // ),
-    );
+        // bottomNavigationBar: BottomNavigationBar(
+        //   showSelectedLabels: false,
+        //   showUnselectedLabels: false,
+        //   currentIndex: _selectedIndex,
+        //   items: [
+        //     BottomNavigationBarItem(
+        //         icon: Icon(
+        //           LineAwesomeIcons.home,
+        //           size: 30.0,
+        //         ),
+        //         title: Text('1')),
+        //     BottomNavigationBarItem(
+        //         icon: Icon(
+        //           LineAwesomeIcons.search,
+        //           size: 30.0,
+        //         ),
+        //         title: Text('1')),
+        //     BottomNavigationBarItem(
+        //         icon: Icon(
+        //           LineAwesomeIcons.gratipay,
+        //           size: 30.0,
+        //         ),
+        //         title: Text('1')),
+        //   ],
+        //   onTap: onTapped,
+        // ),
+        floatingActionButton: Container(
+            margin: EdgeInsets.all(10),
+            child: FloatingActionButton(
+              child: Icon(
+                Icons.update_sharp,
+                size: 32,
+              ),
+              onPressed: () => read(),
+              backgroundColor: lightColor,
+            )));
   }
 
   Stack _buildTopStack() {
@@ -243,7 +256,7 @@ class _MyHomePageState extends State<MyHomePage> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text('Today\'s data', style: nextAppointmentTitleStyle),
+          Text('Latest data', style: nextAppointmentTitleStyle),
           InkWell(
               child: Text(
                 'See All',
@@ -251,6 +264,8 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               onTap: () {
                 // Navigator.pushReplacementNamed(context, '/data');
+                print(results
+                    .values.first[results.values.first.length - 1].value);
                 Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -269,6 +284,19 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   _buildNextAppointmentInfo() {
+    final Map<String, List> biometricdata = {};
+    results.forEach((key, value) {
+      if (key is DataType) {
+        biometricdata['$key'] = value;
+      }
+    });
+    final heartrate = biometricdata['DataType.HEART_RATE'].last.value.round();
+    final heartrate_time = biometricdata['DataType.HEART_RATE'].last.dateTo;
+    final steps = biometricdata['DataType.STEP_COUNT'].last.value.round();
+    final steps_time = biometricdata['DataType.STEP_COUNT'].last.dateTo;
+    final energy = biometricdata['DataType.ENERGY'].last.value.round();
+    final energy_time = biometricdata['DataType.ENERGY'].last.dateTo;
+
     return Container(
       padding: EdgeInsets.symmetric(vertical: 14.0, horizontal: 18.0),
       // decoration: BoxDecoration(
@@ -308,36 +336,11 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               RichText(
                   text: TextSpan(
-                      text: '心拍数 BPM',
+                      text: '心拍数 $heartrate BPM',
                       style: appointmentMainStyle,
                       children: [
                     TextSpan(
-                      text: '\n Now',
-                      style: appointmentDatastyle,
-                    ),
-                  ]))
-            ],
-          ),
-          Padding(padding: EdgeInsets.only(top: 18)),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Icon(
-                LineAwesomeIcons.bed,
-                size: 40,
-                color: Colors.green,
-              ),
-              SizedBox(
-                width: 12,
-              ),
-              RichText(
-                  text: TextSpan(
-                      text: '昨日は時間分眠りました',
-                      style: appointmentMainStyle,
-                      children: [
-                    TextSpan(
-                      text: '\n Now',
+                      text: '\n $heartrate_time',
                       style: appointmentDatastyle,
                     ),
                   ]))
@@ -358,11 +361,36 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               RichText(
                   text: TextSpan(
-                      text: '歩数：',
+                      text: '歩数：$steps 歩',
                       style: appointmentMainStyle,
                       children: [
                     TextSpan(
-                      text: '\n Now',
+                      text: '\n $steps_time',
+                      style: appointmentDatastyle,
+                    ),
+                  ]))
+            ],
+          ),
+          Padding(padding: EdgeInsets.only(top: 18)),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Icon(
+                LineAwesomeIcons.fire,
+                size: 40,
+                color: Colors.green,
+              ),
+              SizedBox(
+                width: 12,
+              ),
+              RichText(
+                  text: TextSpan(
+                      text: '$energy kCal',
+                      style: appointmentMainStyle,
+                      children: [
+                    TextSpan(
+                      text: '\n $energy_time',
                       style: appointmentDatastyle,
                     ),
                   ]))
@@ -376,10 +404,10 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  void onTapped(int value) {
-    setState(() {
-      _selectedIndex = value;
-      print(results);
-    });
-  }
+  // void onTapped(int value) {
+  //   setState(() {
+  //     _selectedIndex = value;
+  //     print(results);
+  //   });
+  // }
 }

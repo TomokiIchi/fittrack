@@ -6,7 +6,6 @@ import 'package:fittrack_ui/utisl.dart';
 import 'dart:async';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:fit_kit/fit_kit.dart';
-import 'dart:convert';
 
 enum AppState {
   DATA_NOT_FETCHED,
@@ -108,8 +107,6 @@ class _MyHomePageState extends State<MyHomePage> {
                     // _buildNotificationCard(),
                     _buildNextAppointmentTitle(),
                     _buildNextAppointmentInfo(),
-                    // _buildProfileTitle(),
-                    // _buildProfileInfo(),
                   ],
                 ),
               ),
@@ -148,8 +145,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Stack _buildTopStack() {
     return Stack(
+      clipBehavior: Clip.none,
       alignment: AlignmentDirectional.topCenter,
-      overflow: Overflow.visible,
       children: <Widget>[
         _buildBackgroundCover(),
         _buildGreetings(),
@@ -215,41 +212,32 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  _buildNotificationCard() {
-    return Container(
-      padding: EdgeInsets.all(12.0),
-      decoration: BoxDecoration(
-        color: lightColor,
-        borderRadius: BorderRadius.circular(10),
-      ),
-      child: ListTile(
-        leading: Icon(
-          LineAwesomeIcons.heart,
-          color: Colors.white,
-          size: 32,
-        ),
-        title: Text(
-          'Result',
-          style: notificationTitleStyle,
-        ),
-        trailing: OutlineButton(
-          onPressed: () {},
-          color: Colors.transparent,
-          borderSide: BorderSide(color: Colors.white, width: 1.0),
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(26)),
-          child: Text(
-            'Detail',
-            style: notificationButtonStyle,
-          ),
-        ),
-      ),
-    );
-  }
+  // _buildNotificationCard() {
+  //   return Container(
+  //     padding: EdgeInsets.all(12.0),
+  //     decoration: BoxDecoration(
+  //       color: lightColor,
+  //       borderRadius: BorderRadius.circular(10),
+  //     ),
+  //     child: ListTile(
+  //       leading: Icon(
+  //         LineAwesomeIcons.heart,
+  //         color: Colors.white,
+  //         size: 32,
+  //       ),
+  //       title: Text(
+  //         'Result',
+  //         style: notificationTitleStyle,
+  //       ),
+  //       trailing: Text(
+  //         'Detail',
+  //         style: notificationButtonStyle,
+  //       ),
+  //     ),
+  //   );
+  // }
 
   _buildNextAppointmentTitle() {
-    final items =
-        results.entries.expand((entry) => [entry.key, ...entry.value]).toList();
     return Container(
       margin: EdgeInsets.only(top: 20.0, bottom: 20.0),
       child: Row(
@@ -262,13 +250,12 @@ class _MyHomePageState extends State<MyHomePage> {
                 style: nextAppointmentSubTitleStyle,
               ),
               onTap: () {
-                print(results.length);
-                print(results.values);
                 // Navigator.pushReplacementNamed(context, '/data');
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => DataPage(items: items)));
+                        builder: (context) =>
+                            DataPage(items: results.values.first)));
                 // for (var item in items) {
                 //   if (item is DataType) {
                 //     print("$item \n");
@@ -388,8 +375,6 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
     );
   }
-
-  _buildProfileTitle() {}
 
   void onTapped(int value) {
     setState(() {

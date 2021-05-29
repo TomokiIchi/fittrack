@@ -1,11 +1,10 @@
-import 'package:fit_kit/fit_kit.dart';
 import 'package:fittrack_ui/utisl.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:fittrack_ui/style.dart';
 
 class DataPage extends StatelessWidget {
-  List items;
+  final List items;
   DataPage({this.items});
   _buildBackgroundCover() {
     return Container(
@@ -44,8 +43,8 @@ class DataPage extends StatelessWidget {
 
   Stack _buildTopStack() {
     return Stack(
+      clipBehavior: Clip.none,
       alignment: AlignmentDirectional.topCenter,
-      overflow: Overflow.visible,
       children: <Widget>[
         _buildBackgroundCover(),
         _buildTitle(),

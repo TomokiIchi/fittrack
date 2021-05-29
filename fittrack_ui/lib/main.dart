@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
         accentColor: lightColor,
         // fontFamily: 'SourceSansPro',
         textTheme: TextTheme(
-          display2: TextStyle(
+          headline3: TextStyle(
             fontFamily: 'OpenSans',
             fontSize: 45.0,
             // fontWeight: FontWeight.w400,

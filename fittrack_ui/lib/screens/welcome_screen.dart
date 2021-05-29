@@ -28,8 +28,8 @@ class _WelComeScreenState extends State<WelComeScreen> {
       await _delay();
       Navigator.pushReplacementNamed(context, '/sign_in');
     } else {
-      final expiry_date_microunixtime = int.parse(expiry) * 1000;
-      if (expiry_date_microunixtime <= now) {
+      final expiryDateMicrounixtime = int.parse(expiry) * 1000;
+      if (expiryDateMicrounixtime <= now) {
         await _delay();
         Navigator.pushReplacementNamed(context, '/sign_in');
       } else {

@@ -369,7 +369,7 @@ class AppButton extends Container {
 
   @override
   Widget build(BuildContext context) {
-    return FlatButton(
+    return TextButton(
       child: Stack(
         alignment: Alignment.centerLeft,
         children: <Widget>[
@@ -382,47 +382,14 @@ class AppButton extends Container {
           ),
         ],
       ),
-      textColor: _textColor,
-      color: _color,
-      shape: RoundedRectangleBorder(
-        side: _borderSide,
-        borderRadius: const BorderRadius.all(Radius.circular(6)),
-      ),
       onPressed: onPressed,
     );
-  }
-
-  Color get _color {
-    switch (buttonType) {
-      case ButtonType.normal:
-        return midColor;
-      case ButtonType.white:
-        return Colors.white;
-      default:
-        return midColor;
-    }
   }
 
   String get _iconPath {
     switch (buttonType) {
       default:
         return '';
-    }
-  }
-
-  get _textColor {
-    switch (buttonType) {
-      default:
-        return Colors.white;
-    }
-  }
-
-  get _borderSide {
-    switch (buttonType) {
-      case ButtonType.white:
-        return BorderSide(color: Colors.white);
-      default:
-        return BorderSide.none;
     }
   }
 }

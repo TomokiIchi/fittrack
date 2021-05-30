@@ -272,19 +272,14 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               onTap: () {
                 // Navigator.pushReplacementNamed(context, '/data');
-                print(results
-                    .values.first[results.values.first.length - 1].value);
+                results.forEach((key, value) {
+                  print('Key:$key, Value:$value');
+                });
                 Navigator.push(
                     context,
                     MaterialPageRoute(
                         builder: (context) =>
                             DataPage(biometricdata: biometricdata)));
-                // for (var item in items) {
-                //   if (item is DataType) {
-                //     print("$item \n");
-                //   } else {
-                // print(item);
-                //   }
               }),
         ],
       ),

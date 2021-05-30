@@ -291,11 +291,11 @@ class _MyHomePageState extends State<MyHomePage> {
 
   _buildNextAppointmentInfo() {
     final heartrate = biometricdata['DataType.HEART_RATE'].last.value.round();
-    final heartrate_time = biometricdata['DataType.HEART_RATE'].last.dateTo;
+    final heartratetime = biometricdata['DataType.HEART_RATE'].last.dateTo;
     final steps = biometricdata['DataType.STEP_COUNT'].last.value.round();
-    final steps_time = biometricdata['DataType.STEP_COUNT'].last.dateTo;
+    final stepstime = biometricdata['DataType.STEP_COUNT'].last.dateTo;
     final energy = biometricdata['DataType.ENERGY'].last.value.round();
-    final energy_time = biometricdata['DataType.ENERGY'].last.dateTo;
+    final energytime = biometricdata['DataType.ENERGY'].last.dateTo;
 
     return Container(
       padding: EdgeInsets.symmetric(vertical: 14.0, horizontal: 18.0),
@@ -340,7 +340,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       style: appointmentMainStyle,
                       children: [
                     TextSpan(
-                      text: '\n $heartrate_time',
+                      text: '\n $heartratetime',
                       style: appointmentDatastyle,
                     ),
                   ]))
@@ -365,7 +365,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       style: appointmentMainStyle,
                       children: [
                     TextSpan(
-                      text: '\n $steps_time',
+                      text: '\n $stepstime',
                       style: appointmentDatastyle,
                     ),
                   ]))
@@ -390,7 +390,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       style: appointmentMainStyle,
                       children: [
                     TextSpan(
-                      text: '\n $energy_time',
+                      text: '\n $energytime',
                       style: appointmentDatastyle,
                     ),
                   ]))

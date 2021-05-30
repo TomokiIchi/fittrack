@@ -43,6 +43,7 @@ class _MyHomePageState extends State<MyHomePage> {
     }
     _dates.add(null);
     hasPermissions();
+    read();
   }
 
   Future<void> read() async {
@@ -70,6 +71,7 @@ class _MyHomePageState extends State<MyHomePage> {
             biometricdata['$key'] = value;
           }
         });
+        setState(() {});
       }
     } catch (e) {
       result = 'readAll: $e';
@@ -290,13 +292,24 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   _buildNextAppointmentInfo() {
-    final heartrate = biometricdata['DataType.HEART_RATE'].last.value.round();
-    final heartratetime = biometricdata['DataType.HEART_RATE'].last.dateTo;
-    final steps = biometricdata['DataType.STEP_COUNT'].last.value.round();
-    final stepstime = biometricdata['DataType.STEP_COUNT'].last.dateTo;
-    final energy = biometricdata['DataType.ENERGY'].last.value.round();
-    final energytime = biometricdata['DataType.ENERGY'].last.dateTo;
-
+    final heartrate = biometricdata.isEmpty
+        ? 0
+        : biometricdata['DataType.HEART_RATE'].last.value.round();
+    final heartratetime = biometricdata.isEmpty
+        ? 0
+        : biometricdata['DataType.HEART_RATE'].last.dateTo;
+    final steps = biometricdata.isEmpty
+        ? 0
+        : biometricdata['DataType.STEP_COUNT'].last.value.round();
+    final stepstime = biometricdata.isEmpty
+        ? 0
+        : biometricdata['DataType.STEP_COUNT'].last.dateTo;
+    final energy = biometricdata.isEmpty
+        ? 0
+        : biometricdata['DataType.ENERGY'].last.value.round();
+    final energytime = biometricdata.isEmpty
+        ? 0
+        : biometricdata['DataType.ENERGY'].last.dateTo;
     return Container(
       padding: EdgeInsets.symmetric(vertical: 14.0, horizontal: 18.0),
       // decoration: BoxDecoration(

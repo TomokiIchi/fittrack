@@ -1,53 +1,29 @@
 import 'package:fittrack_ui/utisl.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:fittrack_ui/style.dart';
+import 'package:fit_kit/fit_kit.dart';
 
 class DataPage extends StatelessWidget {
   final Map<String, List> biometricdata;
   DataPage({this.biometricdata});
-  _buildBackgroundCover() {
-    return Container(
-      height: 260.0,
-      decoration: BoxDecoration(
-          gradient: purpleGradient,
-          borderRadius: BorderRadius.only(
-              bottomLeft: Radius.circular(40),
-              bottomRight: Radius.circular(40))),
-    );
-  }
-
-  _buildTitle() {
-    return Positioned(
-      left: 20.0,
-      bottom: 90.0,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            'Heart Rate',
-            style: greetingTitleStyle,
-          ),
-          SizedBox(
-            height: 10,
-          ),
-          Text(
-            'beats per minute',
-            style: greetingSubtitleStyle,
-          ),
-        ],
-      ),
-    );
-  }
 
   Stack _buildTopStack() {
     return Stack(
       clipBehavior: Clip.none,
       alignment: AlignmentDirectional.topCenter,
       children: <Widget>[
-        _buildBackgroundCover(),
-        _buildTitle(),
+        AppBar(
+          title: Text(
+            'Detail Data',
+            style: TextStyle(
+              fontSize: 24.0,
+              fontWeight: FontWeight.w600,
+              color: Colors.white,
+              height: 1.5,
+            ),
+          ),
+          backgroundColor: lightColor,
+        )
       ],
     );
   }
@@ -55,10 +31,29 @@ class DataPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const cutOffYValue = 5.0;
-    const dateTextStyle = TextStyle(
-        fontSize: 10, color: Colors.purple, fontWeight: FontWeight.bold);
     final double windowWidth = MediaQuery.of(context).size.width;
     final double windowHeight = MediaQuery.of(context).size.height;
+    DateTime now = DateTime.now();
+    final heartspot = biometricdata['DataType.HEART_RATE']
+            .where((element) => element.dateTo.day == now.day)
+            .isEmpty
+        ? [FlSpot(0, 40)]
+        : biometricdata['DataType.HEART_RATE']
+            .where((element) => element.dateTo.day == now.day)
+            .toList()
+            .map((e) => FlSpot(
+                e.dateTo.hour.toDouble() + (e.dateTo.minute / 60).toDouble(),
+                e.value.toDouble()))
+            .toList();
+    final stepspot = biometricdata['DataType.STEP_COUNT']
+        .map((e) => FlSpot(e.dateTo.weekday.toDouble(), e.value.toDouble()))
+        .toList();
+    // final spots = List.generate(101, (i) => (i - 50) / 10)
+    //     .map((x) => FlSpot(x, sin(x)))
+    //     .toList();
+
+    print(heartspot);
+    print(stepspot);
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -69,45 +64,108 @@ class DataPage extends StatelessWidget {
             children: <Widget>[
               _buildTopStack(),
               SizedBox(
-                height: 60.0,
+                height: 30.0,
               ),
               Padding(
-                padding: EdgeInsets.all(20),
+                padding: EdgeInsets.only(top: 20, bottom: 20, right: 20),
                 child: Container(
                   width: windowWidth,
-                  height: windowHeight / 2,
+                  height: windowHeight / 3,
                   child: LineChart(
                     LineChartData(
                       lineTouchData: LineTouchData(enabled: false),
                       lineBarsData: [
                         LineChartBarData(
-                          spots: [
-                            FlSpot(0, 4),
-                            FlSpot(1, 3.5),
-                            FlSpot(2, 4.5),
-                            FlSpot(3, 1),
-                            FlSpot(4, 4),
-                            FlSpot(5, 6),
-                            FlSpot(6, 6.5),
-                            FlSpot(7, 6),
-                            FlSpot(8, 4),
-                            FlSpot(9, 6),
-                            FlSpot(10, 6),
-                            FlSpot(11, 7),
-                          ],
+                          spots: heartspot,
                           isCurved: true,
-                          barWidth: 8,
+                          barWidth: 2,
                           colors: [
-                            Colors.purpleAccent,
+                            Colors.redAccent,
                           ],
                           belowBarData: BarAreaData(
-                            show: true,
+                            show: false,
                             colors: [Colors.deepPurple.withOpacity(0.4)],
                             cutOffY: cutOffYValue,
                             applyCutOffY: true,
                           ),
                           aboveBarData: BarAreaData(
-                            show: true,
+                            show: false,
+                            colors: [Colors.orange.withOpacity(0.6)],
+                            cutOffY: cutOffYValue,
+                            applyCutOffY: true,
+                          ),
+                          dotData: FlDotData(
+                            show: false,
+                          ),
+                        ),
+                      ],
+                      minY: 0,
+                      minX: 0,
+                      maxX: 24,
+                      titlesData: FlTitlesData(
+                        bottomTitles: SideTitles(
+                          showTitles: true,
+                          reservedSize: 12,
+                          getTextStyles: (value) =>
+                              TextStyle(color: Colors.black, fontSize: 10),
+                        ),
+                        leftTitles: SideTitles(
+                          interval: 40,
+                          showTitles: true,
+                          getTitles: (value) {
+                            return '$value';
+                          },
+                        ),
+                      ),
+                      axisTitleData: FlAxisTitleData(
+                          leftTitle: AxisTitle(
+                              showTitle: true, titleText: 'BPM', margin: 2),
+                          bottomTitle: AxisTitle(
+                              showTitle: true,
+                              margin: 8,
+                              titleText: 'Heart Rate',
+                              textStyle:
+                                  TextStyle(fontSize: 22, color: Colors.black),
+                              textAlign: TextAlign.center)),
+                      gridData: FlGridData(
+                        show: true,
+                        checkToShowHorizontalLine: (double value) {
+                          return value == 40 ||
+                              value == 85 ||
+                              value == 130 ||
+                              value == 175 ||
+                              value == 220;
+                        },
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              Padding(
+                padding:
+                    EdgeInsets.only(top: 20, bottom: 20, right: 20, left: 20),
+                child: Container(
+                  width: windowWidth,
+                  height: windowHeight / 3,
+                  child: LineChart(
+                    LineChartData(
+                      lineTouchData: LineTouchData(enabled: false),
+                      lineBarsData: [
+                        LineChartBarData(
+                          spots: stepspot,
+                          isCurved: true,
+                          barWidth: 4,
+                          colors: [
+                            Colors.blueGrey,
+                          ],
+                          belowBarData: BarAreaData(
+                            show: false,
+                            colors: [Colors.deepPurple.withOpacity(0.4)],
+                            cutOffY: cutOffYValue,
+                            applyCutOffY: true,
+                          ),
+                          aboveBarData: BarAreaData(
+                            show: false,
                             colors: [Colors.orange.withOpacity(0.6)],
                             cutOffY: cutOffYValue,
                             applyCutOffY: true,
@@ -120,62 +178,40 @@ class DataPage extends StatelessWidget {
                       minY: 0,
                       titlesData: FlTitlesData(
                         bottomTitles: SideTitles(
-                            showTitles: true,
-                            reservedSize: 14,
-                            getTextStyles: (value) => dateTextStyle,
-                            getTitles: (value) {
-                              switch (value.toInt()) {
-                                case 0:
-                                  return 'Jan';
-                                case 1:
-                                  return 'Feb';
-                                case 2:
-                                  return 'Mar';
-                                case 3:
-                                  return 'Apr';
-                                case 4:
-                                  return 'May';
-                                case 5:
-                                  return 'Jun';
-                                case 6:
-                                  return 'Jul';
-                                case 7:
-                                  return 'Aug';
-                                case 8:
-                                  return 'Sep';
-                                case 9:
-                                  return 'Oct';
-                                case 10:
-                                  return 'Nov';
-                                case 11:
-                                  return 'Dec';
-                                default:
-                                  return '';
-                              }
-                            }),
+                          showTitles: true,
+                          reservedSize: 12,
+                          getTextStyles: (value) =>
+                              TextStyle(color: Colors.black, fontSize: 10),
+                        ),
                         leftTitles: SideTitles(
+                          interval: 400,
                           showTitles: true,
                           getTitles: (value) {
-                            return '\$ ${value + 0.5}';
+                            return '$value';
                           },
                         ),
                       ),
                       axisTitleData: FlAxisTitleData(
                           leftTitle: AxisTitle(
-                              showTitle: true, titleText: 'Value', margin: 4),
+                              showTitle: false, titleText: 'Steps', margin: 2),
                           bottomTitle: AxisTitle(
                               showTitle: true,
-                              margin: 0,
-                              titleText: '2019',
-                              textStyle: dateTextStyle,
-                              textAlign: TextAlign.right)),
+                              margin: 8,
+                              titleText: 'Steps',
+                              textStyle:
+                                  TextStyle(fontSize: 22, color: Colors.black),
+                              textAlign: TextAlign.center)),
                       gridData: FlGridData(
                         show: true,
-                        checkToShowHorizontalLine: (double value) {
-                          return value == 1 ||
-                              value == 6 ||
-                              value == 4 ||
-                              value == 5;
+                        drawHorizontalLine: true,
+                        drawVerticalLine: true,
+                        horizontalInterval: 1.5,
+                        verticalInterval: 400,
+                        checkToShowHorizontalLine: (value) {
+                          return value.toInt() == 0;
+                        },
+                        checkToShowVerticalLine: (value) {
+                          return value.toInt() == 0;
                         },
                       ),
                     ),

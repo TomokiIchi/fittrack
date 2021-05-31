@@ -45,15 +45,31 @@ class DataPage extends StatelessWidget {
                 e.dateTo.hour.toDouble() + (e.dateTo.minute / 60).toDouble(),
                 e.value.toDouble()))
             .toList();
-    final stepspot = biometricdata['DataType.STEP_COUNT']
+    final steps = biometricdata['DataType.STEP_COUNT']
         .map((e) => FlSpot(e.dateTo.weekday.toDouble(), e.value.toDouble()))
         .toList();
-    // final spots = List.generate(101, (i) => (i - 50) / 10)
-    //     .map((x) => FlSpot(x, sin(x)))
-    //     .toList();
-
-    print(heartspot);
-    print(stepspot);
+    List<FlSpot> stepspot = [];
+    stepspot.add(steps
+        .where((element) => element.x == 1)
+        .reduce((value, element) => FlSpot(value.x, value.y + element.y)));
+    stepspot.add(steps
+        .where((element) => element.x == 2)
+        .reduce((value, element) => FlSpot(value.x, value.y + element.y)));
+    stepspot.add(steps
+        .where((element) => element.x == 3)
+        .reduce((value, element) => FlSpot(value.x, value.y + element.y)));
+    stepspot.add(steps
+        .where((element) => element.x == 4)
+        .reduce((value, element) => FlSpot(value.x, value.y + element.y)));
+    stepspot.add(steps
+        .where((element) => element.x == 5)
+        .reduce((value, element) => FlSpot(value.x, value.y + element.y)));
+    stepspot.add(steps
+        .where((element) => element.x == 6)
+        .reduce((value, element) => FlSpot(value.x, value.y + element.y)));
+    stepspot.add(steps
+        .where((element) => element.x == 7)
+        .reduce((value, element) => FlSpot(value.x, value.y + element.y)));
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -159,10 +175,10 @@ class DataPage extends StatelessWidget {
                             Colors.blueGrey,
                           ],
                           belowBarData: BarAreaData(
-                            show: false,
-                            colors: [Colors.deepPurple.withOpacity(0.4)],
+                            show: true,
+                            colors: [Colors.blueGrey.withOpacity(0.4)],
                             cutOffY: cutOffYValue,
-                            applyCutOffY: true,
+                            applyCutOffY: false,
                           ),
                           aboveBarData: BarAreaData(
                             show: false,
@@ -175,16 +191,37 @@ class DataPage extends StatelessWidget {
                           ),
                         ),
                       ],
-                      minY: 0,
+                      minY: 2000,
+                      maxY: 12000,
                       titlesData: FlTitlesData(
                         bottomTitles: SideTitles(
                           showTitles: true,
                           reservedSize: 12,
+                          getTitles: (double value) {
+                            switch (value.toInt()) {
+                              case 1:
+                                return 'Mon';
+                              case 2:
+                                return 'Tue';
+                              case 3:
+                                return 'Wed';
+                              case 4:
+                                return 'Thu';
+                              case 5:
+                                return 'Fri';
+                              case 6:
+                                return 'Sat';
+                              case 7:
+                                return 'Sun';
+                              default:
+                                return '';
+                            }
+                          },
                           getTextStyles: (value) =>
                               TextStyle(color: Colors.black, fontSize: 10),
                         ),
                         leftTitles: SideTitles(
-                          interval: 400,
+                          interval: 2000,
                           showTitles: true,
                           getTitles: (value) {
                             return '$value';

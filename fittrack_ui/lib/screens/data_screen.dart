@@ -224,7 +224,7 @@ class DataPage extends StatelessWidget {
                           interval: 2000,
                           showTitles: true,
                           getTitles: (value) {
-                            return '$value';
+                            return '${value.toInt()}';
                           },
                         ),
                       ),

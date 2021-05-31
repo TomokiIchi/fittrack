@@ -1,7 +1,6 @@
 import 'package:fittrack_ui/utisl.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:fit_kit/fit_kit.dart';
 
 class DataPage extends StatelessWidget {
   final Map<String, List> biometricdata;

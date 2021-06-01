@@ -34,11 +34,13 @@ class DataPage extends StatelessWidget {
     final double windowHeight = MediaQuery.of(context).size.height;
     DateTime now = DateTime.now();
     final heartspot = biometricdata['DataType.HEART_RATE']
-            .where((element) => element.dateTo.day == now.day)
+            .where((element) =>
+                element.dateTo.day == now.add(Duration(days: 0)).day)
             .isEmpty
         ? [FlSpot(0, 40)]
         : biometricdata['DataType.HEART_RATE']
-            .where((element) => element.dateTo.day == now.day)
+            .where((element) =>
+                element.dateTo.day == now.add(Duration(days: 0)).day)
             .toList()
             .map((e) => FlSpot(
                 e.dateTo.hour.toDouble() + (e.dateTo.minute / 60).toDouble(),
@@ -70,6 +72,8 @@ class DataPage extends StatelessWidget {
         .where((element) => element.x == 7)
         .reduce((value, element) => FlSpot(value.x, value.y + element.y)));
 
+    print(stepspot);
+    print(heartspot);
     return Scaffold(
       backgroundColor: Colors.white,
       body: SingleChildScrollView(

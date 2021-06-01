@@ -71,7 +71,6 @@ class _MyHomePageState extends State<MyHomePage> {
             biometricdata['$key'] = value;
           }
         });
-        setState(() {});
       }
     } catch (e) {
       result = 'readAll: $e';
@@ -272,9 +271,9 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               onTap: () {
                 // Navigator.pushReplacementNamed(context, '/data');
-                results.forEach((key, value) {
-                  print('Key:$key, Value:$value');
-                });
+                // results.forEach((key, value) {
+                //   print('Key:$key, Value:$value');
+                // });
                 Navigator.push(
                     context,
                     MaterialPageRoute(

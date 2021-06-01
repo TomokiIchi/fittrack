@@ -1,4 +1,6 @@
 # fittrack
+![vv5wH4ud4XW59LntfMWT1622541466-1622541477](https://user-images.githubusercontent.com/73813855/120305143-66b31100-c30b-11eb-86de-95de3d381633.gif)
+
 ## 概要
 生体データをgoogle fit/ヘルスケアアプリから取得し、一律で使用できるようにします。
 

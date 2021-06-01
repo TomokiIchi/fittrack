@@ -1,5 +1,5 @@
 # fittrack
-<img src="https://user-images.githubusercontent.com/73813855/120305553-d88b5a80-c30b-11eb-9eb3-c5c950484083.gif" width="320">
+<img src="https://user-images.githubusercontent.com/73813855/120306022-636c5500-c30c-11eb-99c6-6577ed586ca7.gif" width="320">
 
 ## 概要
 生体データをgoogle fit/ヘルスケアアプリから取得し、一律で使用できるようにします。

@@ -54,26 +54,26 @@ class _MyHomePageState extends State<MyHomePage> {
       permissions = await FitKit.requestPermissions(DataType.values);
       if (!permissions) {
         result = 'requestPermissions: failed';
-      } else {
-        for (DataType type in DataType.values) {
-          try {
-            results[type] = await FitKit.read(
-              type,
-              dateFrom: _dateFrom,
-              dateTo: _dateTo,
-              limit: _limit,
-            );
-          } on UnsupportedException catch (e) {
-            results[e.dataType] = [];
-          }
-        }
-        result = 'readAll: success';
-        results.forEach((key, value) {
-          if (key is DataType) {
-            biometricdata['$key'] = value;
-          }
-        });
+        return;
       }
+      for (DataType type in DataType.values) {
+        try {
+          results[type] = await FitKit.read(
+            type,
+            dateFrom: _dateFrom,
+            dateTo: _dateTo,
+            limit: _limit,
+          );
+        } on UnsupportedException catch (e) {
+          results[e.dataType] = [];
+        }
+      }
+      result = 'readAll: success';
+      results.forEach((key, value) {
+        if (key is DataType) {
+          biometricdata['$key'] = value;
+        }
+      });
     } catch (e) {
       result = 'readAll: $e';
     }

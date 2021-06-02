@@ -90,7 +90,7 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
-  Future<void> hasPermissions() async {
+  Future<void> fetchPermissions() async {
     try {
       permissions = await FitKit.hasPermissions(DataType.values);
     } catch (e) {

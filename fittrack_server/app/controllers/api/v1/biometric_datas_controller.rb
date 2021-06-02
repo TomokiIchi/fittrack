@@ -4,32 +4,32 @@ module Api
             before_action :set_data, only: [:show, :update, :destroy]
             def index
                 datas = BiometricDatum.order(created_at: :desc)
-                render json: { status: 'SUCCESS', message: 'Loaded datas', data: datas }
+                render json: { status: 'success', message: 'Loaded datas', data: datas }
             end
 
             def show
-                render json: { status: 'SUCCESS', message: 'Loaded the data', data: @data }
+                render json: { status: 'success', message: 'Loaded the data', data: @data }
             end
 
             def create
                 data = BiometricDatum.new(data_params)
                 if data.save
-                    render json: { status: 'SUCCESS', data: data }
+                    render json: { status: 'success', data: data }
                 else
-                    render json: { status: 'Failed', data: data.errors }
+                    render json: { status: 'failed', data: data.errors }
                 end
             end
 
             def destroy
                 @data.destroy
-                render json: { status: 'SUCCESS', message: 'Deleted the data', data: @data }
+                render json: { status: 'success', message: 'Deleted the data', data: @data }
             end
 
             def update
                 if @data.update(data_params)
-                    render json: { status: 'SUCCESS', message: 'Updated the data', data: @data }
+                    render json: { status: 'success', message: 'Updated the data', data: @data }
                 else
-                    render json: { status: 'Failed', message: 'Not updated', data: @data.errors }
+                    render json: { status: 'failed', message: 'Not updated', data: @data.errors }
                 end
             end
 

@@ -126,32 +126,6 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           ),
         ),
-        // bottomNavigationBar: BottomNavigationBar(
-        //   showSelectedLabels: false,
-        //   showUnselectedLabels: false,
-        //   currentIndex: _selectedIndex,
-        //   items: [
-        //     BottomNavigationBarItem(
-        //         icon: Icon(
-        //           LineAwesomeIcons.home,
-        //           size: 30.0,
-        //         ),
-        //         title: Text('1')),
-        //     BottomNavigationBarItem(
-        //         icon: Icon(
-        //           LineAwesomeIcons.search,
-        //           size: 30.0,
-        //         ),
-        //         title: Text('1')),
-        //     BottomNavigationBarItem(
-        //         icon: Icon(
-        //           LineAwesomeIcons.gratipay,
-        //           size: 30.0,
-        //         ),
-        //         title: Text('1')),
-        //   ],
-        //   onTap: onTapped,
-        // ),
         floatingActionButton: Container(
             margin: EdgeInsets.all(10),
             child: FloatingActionButton(

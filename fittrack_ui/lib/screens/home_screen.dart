@@ -35,11 +35,12 @@ class _MyHomePageState extends State<MyHomePage> {
     final now = DateTime.now();
     _dates.add(null);
     for (int i = 7; i >= 0; i--) {
-      _dates.add(DateTime(
+      var dateTime = DateTime(
         now.year,
         now.month,
         now.day,
-      ).subtract(Duration(days: i)));
+      ).subtract(Duration(days: i));
+      _dates.add(dateTime);
     }
     _dates.add(null);
     hasPermissions();

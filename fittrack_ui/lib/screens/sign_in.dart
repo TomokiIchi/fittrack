@@ -1,3 +1,4 @@
+//Todo 稼働していないコメントは削除してもらえるとレビューしやすいです。
 import 'package:fittrack_ui/utisl.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -47,6 +48,8 @@ class _SignInState extends State<SignIn> {
 
   @override
   Widget build(BuildContext context) {
+    // TODO 不要なコメントは削除した方がようかなと思います
+    // TODO 残す場合は理由が書いてあるといいかと思います
     // fcm_tokenのキャッシュを消しておく
     // UserStore().fcmToken = "";
 
@@ -322,6 +325,7 @@ class SigninMessage extends ChangeNotifier {
     snsMessage = "";
   }
 
+  // TODO これ使ってなさそう
   void setMessage(_message) {
     clear();
     message = _message;
@@ -335,6 +339,7 @@ class SigninMessage extends ChangeNotifier {
   }
 }
 
+// TODO 使っているものだけにした方がよいのでは
 enum ButtonType {
   normal,
   line,
@@ -421,7 +426,7 @@ class AppText extends Text {
             color: color,
           ),
         );
-
+  // TODO 使ってなさそう
   // チャットの既読状況
   AppText.messageStatus(value, {Color color})
       : super(
@@ -504,6 +509,7 @@ class SignInButton extends StatelessWidget {
         });
         if (response.statusCode != 201 && response.statusCode != 200) {
           message.setMessage(
+              // TODO statusCodeではなく エラーの内容を出した方が良いと思う
               'Request failed with status: ${response.statusCode}.');
         } else if (response == null) {
           // ここは通らないかもしれなが念の為
@@ -513,6 +519,7 @@ class SignInButton extends StatelessWidget {
           prefs.setString('uid', response.headers["uid"]);
           prefs.setString('accesstoken', response.headers["access-token"]);
           prefs.setString('client', response.headers["client"]);
+          // TODO shared preferenceのキーは定数にしておいた方がいいと思います
           prefs.setString('expiry', response.headers["expiry"]);
 
           Navigator.pushReplacementNamed(context, '/home');
@@ -549,6 +556,7 @@ class SignupButton extends StatelessWidget {
         });
         if (response.statusCode != 201 && response.statusCode != 200) {
           message.setMessage(
+              // TODO statusCodeではなく エラーの内容を出した方が良いと思う
               'Request failed with status: ${response.statusCode}.');
         } else if (response == null) {
           // ここは通らないかもしれなが念の為
@@ -558,6 +566,7 @@ class SignupButton extends StatelessWidget {
           prefs.setString('uid', response.headers["uid"]);
           prefs.setString('accesstoken', response.headers["access-token"]);
           prefs.setString('client', response.headers["client"]);
+          // TODO shared preferenceのキーは定数にしておいた方がいいと思います
           prefs.setString('expiry', response.headers["expiry"]);
 
           Navigator.pushReplacementNamed(context, '/home');

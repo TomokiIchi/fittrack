@@ -34,6 +34,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   void initState() {
+    //Todo 閉じ括弧の多さと改行で、処理が、一目でわかりづらい
     super.initState();
     final now = DateTime.now();
     _dates.add(null);
@@ -44,6 +45,7 @@ class _MyHomePageState extends State<MyHomePage> {
         now.day,
       ).subtract(Duration(days: i)));
     }
+    //Todo nullをaddする場合は理由を知りたい
     _dates.add(null);
     // TODO このメソッドは特に必要なさそうに見えます
     hasPermissions();
@@ -56,6 +58,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Future<void> read() async {
     results.clear();
     try {
+      //Todo ifが数行でelseが長い場合は早期リターンしたい
       permissions = await FitKit.requestPermissions(DataType.values);
       if (!permissions) {
         // TODO この結果を表示しているところはありますかね？
@@ -98,6 +101,7 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
+  // Todo hasはbooleanを返す処理で使われることの多い接頭辞です。
   Future<void> hasPermissions() async {
     try {
       permissions = await FitKit.hasPermissions(DataType.values);
@@ -135,6 +139,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           ),
         ),
+        //Todo 補足コメントのないコメントアウトは削除したい
         // bottomNavigationBar: BottomNavigationBar(
         //   showSelectedLabels: false,
         //   showUnselectedLabels: false,

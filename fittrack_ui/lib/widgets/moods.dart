@@ -1,3 +1,4 @@
+//Todo 稼働していないコメントは削除してもらえるとレビューしやすいです。
 import 'package:flutter/material.dart';
 
 class MyMoods extends StatefulWidget {
@@ -6,6 +7,7 @@ class MyMoods extends StatefulWidget {
 }
 
 class _MyMoodsState extends State<MyMoods> {
+  //Todo が何を表しているのか読み進めないと分からないので、コメントで補足するなり、Mapで値を設定してリスト展開するなどして分かりやすくしてもらえると助かります。
   List<bool> isSelected = [true, false, false, false, false];
   @override
   Widget build(BuildContext context) {

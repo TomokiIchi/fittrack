@@ -1,3 +1,4 @@
+//Todo 稼働していないコメントは削除してもらえるとレビューしやすいです。
 import 'package:fittrack_ui/screens/data_screen.dart';
 import 'package:fittrack_ui/style.dart';
 import 'package:fittrack_ui/widgets/moods.dart';
@@ -16,11 +17,13 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   // int _selectedIndex = 0;
+  // TODO この結果を表示しているところはありますかね？
   String result = '';
   Map<DataType, List<FitData>> results = Map();
   final Map<String, List> biometricdata = {};
   bool permissions;
 
+  // TODO 日付はどこで使っているんですかね？
   List<DateTime> _dates = [];
   RangeValues _dateRange = RangeValues(1, 8);
   double _limitRange = 0;
@@ -42,8 +45,11 @@ class _MyHomePageState extends State<MyHomePage> {
       ).subtract(Duration(days: i)));
     }
     _dates.add(null);
+    // TODO このメソッドは特に必要なさそうに見えます
     hasPermissions();
     read();
+    // TODO read()の結果 biometricdataを反映させるためには setState()なので もう一度buildさせる必要があると思います。
+    // TODO initStateとbuildは非同期で呼ばれる為
     setState(() {});
   }
 
@@ -52,6 +58,7 @@ class _MyHomePageState extends State<MyHomePage> {
     try {
       permissions = await FitKit.requestPermissions(DataType.values);
       if (!permissions) {
+        // TODO この結果を表示しているところはありますかね？
         result = 'requestPermissions: failed';
       } else {
         for (DataType type in DataType.values) {
@@ -78,6 +85,8 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
+  //TODO 使ってなさそう せっかくなので権限を無効にできる機能が使えても良いかな
+  //TODO lib/screens/home_screen.dart の revokePermissions()  が使われている形跡がないのですが、必要なのでしょうか？
   Future<void> revokePermissions() async {
     results.clear();
     try {
@@ -213,6 +222,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   _buildMoodsHolder() {
     return Positioned(
+      //Todo lib/screens/home_screen.dart のL:215でbottom: -45となっていますが、画面サイズが違う場合に期待するUIになるのか気になりました。iPhone 12 Pro Max とiPhone SEなど
       bottom: -45,
       child: Container(
         height: 100,
@@ -278,6 +288,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
+                        // TODO データが取れていない状態で遷移すると落ちます
                         builder: (context) =>
                             DataPage(biometricdata: biometricdata)));
               }),

@@ -1,3 +1,4 @@
+//Todo 稼働していないコメントは削除してもらえるとレビューしやすいです。
 import 'dart:async';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/material.dart';

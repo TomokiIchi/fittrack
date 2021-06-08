@@ -1,3 +1,4 @@
+#Todo APIのステータスの命名規則を揃えたい
 module Api
     module V1
         class BiometricDatasController < ApplicationController

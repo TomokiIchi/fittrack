@@ -29,11 +29,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     super.initState();
-    // TODO このメソッドは特に必要なさそうに見えます
-    fetchPermissions();
     read();
-    // TODO read()の結果 biometricdataを反映させるためには setState()なので もう一度buildさせる必要があると思います。
-    // TODO initStateとbuildは非同期で呼ばれる為
   }
 
   Future<void> read() async {
@@ -65,6 +61,7 @@ class _MyHomePageState extends State<MyHomePage> {
     } catch (e) {
       result = 'readAll: $e';
     }
+    setState(() {});
   }
 
   //TODO 使ってなさそう せっかくなので権限を無効にできる機能が使えても良いかな

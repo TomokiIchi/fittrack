@@ -58,10 +58,10 @@ class _MyHomePageState extends State<MyHomePage> {
           biometricdata['$key'] = value;
         }
       });
-      setState(() {});
     } catch (e) {
       result = 'readAll: $e';
     }
+    setState(() {});
   }
 
   //TODO 使ってなさそう せっかくなので権限を無効にできる機能が使えても良いかな

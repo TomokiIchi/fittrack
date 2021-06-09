@@ -213,7 +213,6 @@ class _MyHomePageState extends State<MyHomePage> {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        // TODO データが取れていない状態で遷移すると落ちます
                         builder: (context) =>
                             DataPage(biometricdata: biometricdata)));
               }),
@@ -223,22 +222,22 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   _buildNextAppointmentInfo() {
-    final heartrate = biometricdata.isEmpty
+    final heartrate = biometricdata['DataType.HEART_RATE']?.isEmpty ?? true
         ? 0
         : biometricdata['DataType.HEART_RATE'].last.value.round();
-    final heartratetime = biometricdata.isEmpty
+    final heartratetime = biometricdata['DataType.HEART_RATE']?.isEmpty ?? true
         ? 0
         : biometricdata['DataType.HEART_RATE'].last.dateTo;
-    final steps = biometricdata.isEmpty
+    final steps = biometricdata['DataType.STEP_COUNT']?.isEmpty ?? true
         ? 0
         : biometricdata['DataType.STEP_COUNT'].last.value.round();
-    final stepstime = biometricdata.isEmpty
+    final stepstime = biometricdata['DataType.STEP_COUNT']?.isEmpty ?? true
         ? 0
         : biometricdata['DataType.STEP_COUNT'].last.dateTo;
-    final energy = biometricdata.isEmpty
+    final energy = biometricdata['DataType.ENERGY']?.isEmpty ?? true
         ? 0
         : biometricdata['DataType.ENERGY'].last.value.round();
-    final energytime = biometricdata.isEmpty
+    final energytime = biometricdata['DataType.ENERGY']?.isEmpty ?? true
         ? 0
         : biometricdata['DataType.ENERGY'].last.dateTo;
     return Container(

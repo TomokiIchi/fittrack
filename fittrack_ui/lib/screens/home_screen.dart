@@ -23,6 +23,11 @@ class _MyHomePageState extends State<MyHomePage> {
   final Map<String, List> biometricdata = {};
   bool permissions;
 
+  // FitKitの使い方
+  // Map<DataType, List<FitData>> MAP_NAME = await read()
+  // FitDataはsrc/fit_data.dartで定義されている。num value、DateTime dateFrom、DateTime dateTo、String source、bool userEnteredの5つの変数を持つ。
+  // DataTypeはsrc/fit_kit.dartで定義されている。10種類のString。
+
   @override
   void initState() {
     super.initState();

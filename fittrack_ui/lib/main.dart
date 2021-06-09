@@ -18,9 +18,9 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'FitTrack',
       theme: ThemeData(
-        primaryColor: lightColor,
+        primaryColor: AppColor.lightColor,
         primarySwatch: Colors.deepPurple,
-        accentColor: lightColor,
+        accentColor: AppColor.lightColor,
         // fontFamily: 'SourceSansPro',
         textTheme: TextTheme(
           headline3: TextStyle(

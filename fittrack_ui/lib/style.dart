@@ -1,5 +1,4 @@
 //Todo 稼働していないコメントは削除してもらえるとレビューしやすいです。
-// Todo 定数はクラスでまとめたい
 import 'package:fittrack_ui/utisl.dart';
 import 'package:flutter/material.dart';
 
@@ -20,7 +19,7 @@ class AppStyle {
       fontSize: 18.0, fontWeight: FontWeight.w500, color: Colors.black);
 
   static const nextAppointmentSubTitleStyle =
-      TextStyle(fontSize: 14.0, fontWeight: FontWeight.w500, color: lightColor);
+      TextStyle(fontSize: 14.0, fontWeight: FontWeight.w500, color: AppColor.lightColor);
 
   static const appointmentMainStyle = TextStyle(
     fontSize: 16.0,

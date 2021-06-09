@@ -174,7 +174,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
   _buildMoodsHolder() {
     return Positioned(
-      //Todo lib/screens/home_screen.dart のL:215でbottom: -45となっていますが、画面サイズが違う場合に期待するUIになるのか気になりました。iPhone 12 Pro Max とiPhone SEなど
       bottom: -45,
       child: Container(
         height: 100,

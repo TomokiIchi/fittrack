@@ -37,13 +37,15 @@ class _MyHomePageState extends State<MyHomePage> {
     //Todo 閉じ括弧の多さと改行で、処理が、一目でわかりづらい
     super.initState();
     final now = DateTime.now();
+    //
     _dates.add(null);
     for (int i = 7; i >= 0; i--) {
-      _dates.add(DateTime(
+      var dateTime = DateTime(
         now.year,
         now.month,
         now.day,
-      ).subtract(Duration(days: i)));
+      ).subtract(Duration(days: i));
+      _dates.add(dateTime);
     }
     //Todo nullをaddする場合は理由を知りたい
     _dates.add(null);
@@ -63,26 +65,26 @@ class _MyHomePageState extends State<MyHomePage> {
       if (!permissions) {
         // TODO この結果を表示しているところはありますかね？
         result = 'requestPermissions: failed';
-      } else {
-        for (DataType type in DataType.values) {
-          try {
-            results[type] = await FitKit.read(
-              type,
-              dateFrom: _dateFrom,
-              dateTo: _dateTo,
-              limit: _limit,
-            );
-          } on UnsupportedException catch (e) {
-            results[e.dataType] = [];
-          }
-        }
-        result = 'readAll: success';
-        results.forEach((key, value) {
-          if (key is DataType) {
-            biometricdata['$key'] = value;
-          }
-        });
+        return;
       }
+      for (DataType type in DataType.values) {
+        try {
+          results[type] = await FitKit.read(
+            type,
+            dateFrom: _dateFrom,
+            dateTo: _dateTo,
+            limit: _limit,
+          );
+        } on UnsupportedException catch (e) {
+          results[e.dataType] = [];
+        }
+      }
+      result = 'readAll: success';
+      results.forEach((key, value) {
+        if (key is DataType) {
+          biometricdata['$key'] = value;
+        }
+      });
     } catch (e) {
       result = 'readAll: $e';
     }
@@ -101,8 +103,12 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
+<<<<<<< HEAD
   // Todo hasはbooleanを返す処理で使われることの多い接頭辞です。
   Future<void> hasPermissions() async {
+=======
+  Future<void> fetchPermissions() async {
+>>>>>>> b8c01df7daa08b03410c75c6dae617e1201808da
     try {
       permissions = await FitKit.hasPermissions(DataType.values);
     } catch (e) {
@@ -139,6 +145,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           ),
         ),
+<<<<<<< HEAD
         //Todo 補足コメントのないコメントアウトは削除したい
         // bottomNavigationBar: BottomNavigationBar(
         //   showSelectedLabels: false,
@@ -166,6 +173,8 @@ class _MyHomePageState extends State<MyHomePage> {
         //   ],
         //   onTap: onTapped,
         // ),
+=======
+>>>>>>> b8c01df7daa08b03410c75c6dae617e1201808da
         floatingActionButton: Container(
             margin: EdgeInsets.all(10),
             child: FloatingActionButton(

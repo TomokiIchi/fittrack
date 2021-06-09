@@ -1,4 +1,3 @@
-//Todo 稼働していないコメントは削除してもらえるとレビューしやすいです。
 import 'dart:async';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/material.dart';
@@ -9,7 +8,6 @@ class WelComeScreen extends StatefulWidget {
 }
 
 class _WelComeScreenState extends State<WelComeScreen> {
-  //ログインチェックを_isNeedSignin、ヘルスデータの同期チェックを_isNeedHealthとする（0が必要なし、1が必要あり）
   _WelComeScreenState();
 
   final now = DateTime.now().toUtc().millisecondsSinceEpoch;
@@ -67,7 +65,7 @@ class _WelComeScreenState extends State<WelComeScreen> {
     );
   }
 
-  // 最低でもDuration秒は表示する
+  // 最低でもDuration秒はログイン画面までにロゴを表示する
   Future<void> _delay() {
     return Future.delayed(const Duration(milliseconds: 1000));
   }

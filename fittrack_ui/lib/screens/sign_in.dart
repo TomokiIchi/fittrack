@@ -1,4 +1,3 @@
-//Todo 稼働していないコメントは削除してもらえるとレビューしやすいです。
 import 'package:fittrack_ui/utisl.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -48,11 +47,6 @@ class _SignInState extends State<SignIn> {
 
   @override
   Widget build(BuildContext context) {
-    // TODO 不要なコメントは削除した方がようかなと思います
-    // TODO 残す場合は理由が書いてあるといいかと思います
-    // fcm_tokenのキャッシュを消しておく
-    // UserStore().fcmToken = "";
-
     return Scaffold(
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
@@ -72,19 +66,6 @@ class _SignInState extends State<SignIn> {
                         fontWeight: FontWeight.w600)),
                 Divider(color: AppColor.darkColor, indent: 16, endIndent: 16),
                 const SizedBox(height: 16),
-                //
-                // const SizedBox(height: 16),
-                // SizedBox(width: 300, child: FacebookSignInButton()),
-                // const SizedBox(height: 38),
-                // SizedBox(width: 300, child: LineSignInButton()),
-                // iosのみ表示
-                // Visibility(
-                //   visible: Platform.isIOS,
-                //   child: Column(children: <Widget>[
-                //     const SizedBox(height: 38),
-                //     SizedBox(width: 300, child: AppleSignInButton())
-                //   ]),
-                // ),
                 // ログイン / ユーザー登録 で差異のある部分
                 this._type == SignInType.login
                     ? _loginWidget()
@@ -147,19 +128,6 @@ class _SignInState extends State<SignIn> {
                     obscureText: true),
               ),
               const SizedBox(height: 10),
-              // GestureDetector(
-              //   onTap: () async {
-              // String url = _env.env["PASSWORD_VERIFY_URL"];
-              // if (await canLaunch(url)) {
-              //   await launch(url);
-              // }
-              //   },
-              // child: Center(
-              //     child: Text(
-              //   "パスワードをお忘れの方は",
-              //   style: TextStyle(color: Colors.blueAccent, fontSize: 16),
-              // )),
-              // ),
             ],
           ),
         ),
@@ -262,17 +230,22 @@ class _SignInState extends State<SignIn> {
                   child: RichText(
                       text: TextSpan(children: [
                     TextSpan(
-                        text: '登録により、', style: TextStyle(color: AppColor.textcolor)),
+                        text: '登録により、',
+                        style: TextStyle(color: AppColor.textcolor)),
                     TextSpan(
                       text: '利用規約',
                       style: TextStyle(color: AppColor.lightColor),
+                      //TODO 利用規約へのリンク作成
                       // recognizer: TapGestureRecognizer()
                       // ..onTap = () => launch(_env.env['TERMS_URL']),
                     ),
-                    TextSpan(text: 'および', style: TextStyle(color: AppColor.textcolor)),
+                    TextSpan(
+                        text: 'および',
+                        style: TextStyle(color: AppColor.textcolor)),
                     TextSpan(
                       text: 'プライバシーポリシー',
                       style: TextStyle(color: AppColor.lightColor),
+                      // TODO プライバシーポリシーへのリンク作成
                       // recognizer: TapGestureRecognizer()
                       // ..onTap = () =>
                       // launch(_env.env['PRIVACY_POLICY_URL']),
@@ -325,31 +298,16 @@ class SigninMessage extends ChangeNotifier {
     snsMessage = "";
   }
 
-  // TODO これ使ってなさそう
   void setMessage(_message) {
     clear();
     message = _message;
     notifyListeners();
   }
-
-  void setSnsMessage(_snsMessage) {
-    clear();
-    snsMessage = _snsMessage;
-    notifyListeners();
-  }
 }
 
-// TODO 使っているものだけにした方がよいのでは
 enum ButtonType {
   normal,
-  line,
-  facebook,
-  apple,
   registeration,
-  white,
-  reservation,
-  negative,
-  cancel,
 }
 
 class AppButton extends Container {
@@ -426,21 +384,15 @@ class AppText extends Text {
             color: color,
           ),
         );
-  // TODO 使ってなさそう
-  // チャットの既読状況
-  AppText.messageStatus(value, {Color color})
-      : super(
-          value,
-          style: TextStyle(
-              fontSize: 10, fontWeight: FontWeight.w400, color: color),
-        );
 
   // サインイン画面のラベル
   AppText.signinLabel(value)
       : super(
           value,
           style: TextStyle(
-              fontSize: 14, fontWeight: FontWeight.w600, color: AppColor.textcolor),
+              fontSize: 14,
+              fontWeight: FontWeight.w600,
+              color: AppColor.textcolor),
         );
 }
 

@@ -1,4 +1,3 @@
-//Todo 稼働していないコメントは削除してもらえるとレビューしやすいです。
 import 'package:fittrack_ui/screens/data_screen.dart';
 import 'package:fittrack_ui/screens/home_screen.dart';
 import 'package:fittrack_ui/screens/sign_in.dart';

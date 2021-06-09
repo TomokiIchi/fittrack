@@ -1,4 +1,3 @@
-//Todo 稼働していないコメントは削除してもらえるとレビューしやすいです。
 import 'package:fittrack_ui/screens/data_screen.dart';
 import 'package:fittrack_ui/style.dart';
 import 'package:fittrack_ui/widgets/moods.dart';
@@ -16,7 +15,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  // int _selectedIndex = 0;
   // TODO この結果を表示しているところはありますかね？
   String result = '';
   Map<DataType, List<FitData>> results = Map();
@@ -110,7 +108,6 @@ class _MyHomePageState extends State<MyHomePage> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      // _buildNotificationCard(),
                       _buildNextAppointmentTitle(),
                       _buildNextAppointmentInfo(),
                     ],
@@ -202,31 +199,6 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  // _buildNotificationCard() {
-  //   return Container(
-  //     padding: EdgeInsets.all(12.0),
-  //     decoration: BoxDecoration(
-  //       color: lightColor,
-  //       borderRadius: BorderRadius.circular(10),
-  //     ),
-  //     child: ListTile(
-  //       leading: Icon(
-  //         LineAwesomeIcons.heart,
-  //         color: Colors.white,
-  //         size: 32,
-  //       ),
-  //       title: Text(
-  //         'Result',
-  //         style: notificationTitleStyle,
-  //       ),
-  //       trailing: Text(
-  //         'Detail',
-  //         style: notificationButtonStyle,
-  //       ),
-  //     ),
-  //   );
-  // }
-
   _buildNextAppointmentTitle() {
     return Container(
       margin: EdgeInsets.only(top: 20.0, bottom: 20.0),
@@ -240,7 +212,6 @@ class _MyHomePageState extends State<MyHomePage> {
                 style: AppStyle.nextAppointmentSubTitleStyle,
               ),
               onTap: () {
-                // Navigator.pushReplacementNamed(context, '/data');
                 results.forEach((key, value) {
                   print('Key:$key, Value:$value');
                 });
@@ -277,8 +248,6 @@ class _MyHomePageState extends State<MyHomePage> {
         : biometricdata['DataType.ENERGY'].last.dateTo;
     return Container(
       padding: EdgeInsets.symmetric(vertical: 14.0, horizontal: 18.0),
-      // decoration: BoxDecoration(
-      //     color: Colors.white, borderRadius: BorderRadius.circular(18)),
       decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.all(Radius.circular(18)),
@@ -299,11 +268,6 @@ class _MyHomePageState extends State<MyHomePage> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // CircleAvatar(
-              //   backgroundColor: Colors.grey,
-              //   backgroundImage: NetworkImage(USER_IMAGE),
-              //   radius: 36,
-              // ),
               Icon(
                 LineAwesomeIcons.heart,
                 size: 40,
@@ -381,11 +345,4 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
     );
   }
-
-  // void onTapped(int value) {
-  //   setState(() {
-  //     _selectedIndex = value;
-  //     print(results);
-  //   });
-  // }
 }

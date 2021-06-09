@@ -33,10 +33,7 @@ class DataPage extends StatelessWidget {
     final double windowWidth = MediaQuery.of(context).size.width;
     final double windowHeight = MediaQuery.of(context).size.height;
     DateTime now = DateTime.now();
-    final heartspot = biometricdata['DataType.HEART_RATE']
-            .where((element) =>
-                element.dateTo.day == now.add(Duration(days: 0)).day)
-            .isEmpty
+    final heartspot = biometricdata['DataType.HEART_RATE']?.isEmpty ?? true
         ? [FlSpot(0, 40)]
         : biometricdata['DataType.HEART_RATE']
             .where((element) =>
@@ -46,9 +43,19 @@ class DataPage extends StatelessWidget {
                 e.dateTo.hour.toDouble() + (e.dateTo.minute / 60).toDouble(),
                 e.value.toDouble()))
             .toList();
-    final steps = biometricdata['DataType.STEP_COUNT']
-        .map((e) => FlSpot(e.dateTo.weekday.toDouble(), e.value.toDouble()))
-        .toList();
+    final steps = biometricdata['DataType.STEP_COUNT']?.isEmpty ?? true
+        ? [
+            FlSpot(1, 2000),
+            FlSpot(2, 2000),
+            FlSpot(3, 2000),
+            FlSpot(4, 2000),
+            FlSpot(5, 2000),
+            FlSpot(6, 2000),
+            FlSpot(7, 2000)
+          ]
+        : biometricdata['DataType.STEP_COUNT']
+            .map((e) => FlSpot(e.dateTo.weekday.toDouble(), e.value.toDouble()))
+            .toList();
     List<FlSpot> stepspot = [];
     stepspot.add(steps
         .where((element) => element.x == 1)

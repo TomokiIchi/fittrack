@@ -34,7 +34,6 @@ class _MyHomePageState extends State<MyHomePage> {
     read();
     // TODO read()の結果 biometricdataを反映させるためには setState()なので もう一度buildさせる必要があると思います。
     // TODO initStateとbuildは非同期で呼ばれる為
-    setState(() {});
   }
 
   Future<void> read() async {

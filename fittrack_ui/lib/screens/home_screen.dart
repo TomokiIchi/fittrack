@@ -103,12 +103,8 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
-<<<<<<< HEAD
   // Todo hasはbooleanを返す処理で使われることの多い接頭辞です。
-  Future<void> hasPermissions() async {
-=======
   Future<void> fetchPermissions() async {
->>>>>>> b8c01df7daa08b03410c75c6dae617e1201808da
     try {
       permissions = await FitKit.hasPermissions(DataType.values);
     } catch (e) {
@@ -145,36 +141,6 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           ),
         ),
-<<<<<<< HEAD
-        //Todo 補足コメントのないコメントアウトは削除したい
-        // bottomNavigationBar: BottomNavigationBar(
-        //   showSelectedLabels: false,
-        //   showUnselectedLabels: false,
-        //   currentIndex: _selectedIndex,
-        //   items: [
-        //     BottomNavigationBarItem(
-        //         icon: Icon(
-        //           LineAwesomeIcons.home,
-        //           size: 30.0,
-        //         ),
-        //         title: Text('1')),
-        //     BottomNavigationBarItem(
-        //         icon: Icon(
-        //           LineAwesomeIcons.search,
-        //           size: 30.0,
-        //         ),
-        //         title: Text('1')),
-        //     BottomNavigationBarItem(
-        //         icon: Icon(
-        //           LineAwesomeIcons.gratipay,
-        //           size: 30.0,
-        //         ),
-        //         title: Text('1')),
-        //   ],
-        //   onTap: onTapped,
-        // ),
-=======
->>>>>>> b8c01df7daa08b03410c75c6dae617e1201808da
         floatingActionButton: Container(
             margin: EdgeInsets.all(10),
             child: FloatingActionButton(

@@ -50,7 +50,7 @@ class _MyHomePageState extends State<MyHomePage> {
     //Todo nullをaddする場合は理由を知りたい
     _dates.add(null);
     // TODO このメソッドは特に必要なさそうに見えます
-    fetchPermissions();
+    hasPermissions();
     read();
     // TODO read()の結果 biometricdataを反映させるためには setState()なので もう一度buildさせる必要があると思います。
     // TODO initStateとbuildは非同期で呼ばれる為
@@ -149,7 +149,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 size: 32,
               ),
               onPressed: () => read(),
-              backgroundColor: AppColor.lightColor,
+              backgroundColor: lightColor,
             )));
   }
 
@@ -169,7 +169,7 @@ class _MyHomePageState extends State<MyHomePage> {
     return Container(
       height: 260.0,
       decoration: BoxDecoration(
-          gradient: AppColor.purpleGradient,
+          gradient: purpleGradient,
           borderRadius: BorderRadius.only(
               bottomLeft: Radius.circular(40),
               bottomRight: Radius.circular(40))),
@@ -186,14 +186,14 @@ class _MyHomePageState extends State<MyHomePage> {
         children: [
           Text(
             'Hi!',
-            style: AppStyle.greetingTitleStyle,
+            style: greetingTitleStyle,
           ),
           SizedBox(
             height: 10,
           ),
           Text(
             'How are you feeling today?',
-            style: AppStyle.greetingSubtitleStyle,
+            style: greetingSubtitleStyle,
           ),
         ],
       ),
@@ -254,11 +254,11 @@ class _MyHomePageState extends State<MyHomePage> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text('Latest data', style: AppStyle.nextAppointmentTitleStyle),
+          Text('Latest data', style: nextAppointmentTitleStyle),
           InkWell(
               child: Text(
                 'See All',
-                style: AppStyle.nextAppointmentSubTitleStyle,
+                style: nextAppointmentSubTitleStyle,
               ),
               onTap: () {
                 // Navigator.pushReplacementNamed(context, '/data');
@@ -336,11 +336,11 @@ class _MyHomePageState extends State<MyHomePage> {
               RichText(
                   text: TextSpan(
                       text: '心拍数 $heartrate BPM',
-                      style: AppStyle.appointmentMainStyle,
+                      style: appointmentMainStyle,
                       children: [
                     TextSpan(
                       text: '\n $heartratetime',
-                      style: AppStyle.appointmentDatastyle,
+                      style: appointmentDatastyle,
                     ),
                   ]))
             ],
@@ -361,11 +361,11 @@ class _MyHomePageState extends State<MyHomePage> {
               RichText(
                   text: TextSpan(
                       text: '歩数：$steps 歩',
-                      style: AppStyle.appointmentMainStyle,
+                      style: appointmentMainStyle,
                       children: [
                     TextSpan(
                       text: '\n $stepstime',
-                      style: AppStyle.appointmentDatastyle,
+                      style: appointmentDatastyle,
                     ),
                   ]))
             ],
@@ -386,11 +386,11 @@ class _MyHomePageState extends State<MyHomePage> {
               RichText(
                   text: TextSpan(
                       text: '$energy kCal',
-                      style: AppStyle.appointmentMainStyle,
+                      style: appointmentMainStyle,
                       children: [
                     TextSpan(
                       text: '\n $energytime',
-                      style: AppStyle.appointmentDatastyle,
+                      style: appointmentDatastyle,
                     ),
                   ]))
             ],

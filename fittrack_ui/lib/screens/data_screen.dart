@@ -23,7 +23,7 @@ class DataPage extends StatelessWidget {
               height: 1.5,
             ),
           ),
-          backgroundColor: AppColor.lightColor,
+          backgroundColor: lightColor,
         )
       ],
     );

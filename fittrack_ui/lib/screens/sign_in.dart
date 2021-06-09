@@ -67,10 +67,10 @@ class _SignInState extends State<SignIn> {
                 ),
                 Text(this._type == SignInType.login ? 'ログイン' : 'ユーザー登録',
                     style: TextStyle(
-                        color: AppColor.textcolor,
+                        color: textcolor,
                         fontSize: 18,
                         fontWeight: FontWeight.w600)),
-                Divider(color: AppColor.darkColor, indent: 16, endIndent: 16),
+                Divider(color: darkColor, indent: 16, endIndent: 16),
                 const SizedBox(height: 16),
                 //
                 // const SizedBox(height: 16),
@@ -169,7 +169,7 @@ class _SignInState extends State<SignIn> {
               margin: EdgeInsets.fromLTRB(40, 0, 40, 0),
               child: Text(
                 message.message,
-                style: TextStyle(fontSize: 14, color: AppColor.errorcolor),
+                style: TextStyle(fontSize: 14, color: errorcolor),
               ),
             );
           },
@@ -253,7 +253,7 @@ class _SignInState extends State<SignIn> {
                   padding: EdgeInsets.only(top: 8),
                   child: Text(
                     message.message,
-                    style: TextStyle(fontSize: 14, color: AppColor.errorcolor),
+                    style: TextStyle(fontSize: 14, color: errorcolor),
                   ),
                 );
               }),
@@ -262,24 +262,24 @@ class _SignInState extends State<SignIn> {
                   child: RichText(
                       text: TextSpan(children: [
                     TextSpan(
-                        text: '登録により、', style: TextStyle(color: AppColor.textcolor)),
+                        text: '登録により、', style: TextStyle(color: textcolor)),
                     TextSpan(
                       text: '利用規約',
-                      style: TextStyle(color: AppColor.lightColor),
+                      style: TextStyle(color: lightColor),
                       // recognizer: TapGestureRecognizer()
                       // ..onTap = () => launch(_env.env['TERMS_URL']),
                     ),
-                    TextSpan(text: 'および', style: TextStyle(color: AppColor.textcolor)),
+                    TextSpan(text: 'および', style: TextStyle(color: textcolor)),
                     TextSpan(
                       text: 'プライバシーポリシー',
-                      style: TextStyle(color: AppColor.lightColor),
+                      style: TextStyle(color: lightColor),
                       // recognizer: TapGestureRecognizer()
                       // ..onTap = () =>
                       // launch(_env.env['PRIVACY_POLICY_URL']),
                     ),
                     TextSpan(
                         text: 'に同意したとみなされます。',
-                        style: TextStyle(color: AppColor.textcolor)),
+                        style: TextStyle(color: textcolor)),
                   ]))),
               SizedBox(height: 20),
               SizedBox(
@@ -440,7 +440,7 @@ class AppText extends Text {
       : super(
           value,
           style: TextStyle(
-              fontSize: 14, fontWeight: FontWeight.w600, color: AppColor.textcolor),
+              fontSize: 14, fontWeight: FontWeight.w600, color: textcolor),
         );
 }
 
@@ -464,7 +464,7 @@ class AppInput {
           child: Align(
             alignment: Alignment.centerLeft,
             child: TextField(
-              cursorColor: AppColor.midColor,
+              cursorColor: midColor,
               autofocus: autofocus,
               obscureText: obscureText,
               cursorWidth: 1.0,

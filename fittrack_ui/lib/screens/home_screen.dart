@@ -60,7 +60,6 @@ class _MyHomePageState extends State<MyHomePage> {
   Future<void> read() async {
     results.clear();
     try {
-      //Todo ifが数行でelseが長い場合は早期リターンしたい
       permissions = await FitKit.requestPermissions(DataType.values);
       if (!permissions) {
         // TODO この結果を表示しているところはありますかね？
@@ -103,7 +102,6 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
-  // Todo hasはbooleanを返す処理で使われることの多い接頭辞です。
   Future<void> fetchPermissions() async {
     try {
       permissions = await FitKit.hasPermissions(DataType.values);

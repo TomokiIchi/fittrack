@@ -23,32 +23,14 @@ class _MyHomePageState extends State<MyHomePage> {
   final Map<String, List> biometricdata = {};
   bool permissions;
 
-  // TODO 日付はどこで使っているんですかね？
-  List<DateTime> _dates = [];
-  RangeValues _dateRange = RangeValues(1, 8);
-  double _limitRange = 0;
-
-  DateTime get _dateFrom => _dates[_dateRange.start.round()];
-  DateTime get _dateTo => _dates[_dateRange.end.round()];
-  int get _limit => _limitRange == 0.0 ? null : _limitRange.round();
+  // FitKitの使い方
+  // Map<DataType, List<FitData>> MAP_NAME = await read()
+  // FitDataはsrc/fit_data.dartで定義されている。num value、DateTime dateFrom、DateTime dateTo、String source、bool userEnteredの5つの変数を持つ。
+  // DataTypeはsrc/fit_kit.dartで定義されている。10種類のString。
 
   @override
   void initState() {
-    //Todo 閉じ括弧の多さと改行で、処理が、一目でわかりづらい
     super.initState();
-    final now = DateTime.now();
-    //
-    _dates.add(null);
-    for (int i = 7; i >= 0; i--) {
-      var dateTime = DateTime(
-        now.year,
-        now.month,
-        now.day,
-      ).subtract(Duration(days: i));
-      _dates.add(dateTime);
-    }
-    //Todo nullをaddする場合は理由を知りたい
-    _dates.add(null);
     // TODO このメソッドは特に必要なさそうに見えます
     fetchPermissions();
     read();
@@ -60,7 +42,6 @@ class _MyHomePageState extends State<MyHomePage> {
   Future<void> read() async {
     results.clear();
     try {
-      //Todo ifが数行でelseが長い場合は早期リターンしたい
       permissions = await FitKit.requestPermissions(DataType.values);
       if (!permissions) {
         // TODO この結果を表示しているところはありますかね？
@@ -71,9 +52,8 @@ class _MyHomePageState extends State<MyHomePage> {
         try {
           results[type] = await FitKit.read(
             type,
-            dateFrom: _dateFrom,
-            dateTo: _dateTo,
-            limit: _limit,
+            dateFrom: DateTime.now().subtract(Duration(days: 7)),
+            dateTo: DateTime.now(),
           );
         } on UnsupportedException catch (e) {
           results[e.dataType] = [];
@@ -103,7 +83,6 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
-  // Todo hasはbooleanを返す処理で使われることの多い接頭辞です。
   Future<void> fetchPermissions() async {
     try {
       permissions = await FitKit.hasPermissions(DataType.values);
@@ -262,9 +241,9 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               onTap: () {
                 // Navigator.pushReplacementNamed(context, '/data');
-                // results.forEach((key, value) {
-                //   print('Key:$key, Value:$value');
-                // });
+                results.forEach((key, value) {
+                  print('Key:$key, Value:$value');
+                });
                 Navigator.push(
                     context,
                     MaterialPageRoute(

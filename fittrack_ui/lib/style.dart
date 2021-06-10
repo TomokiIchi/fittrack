@@ -1,4 +1,4 @@
-import 'package:fittrack_ui/utisl.dart';
+import 'package:fittrack_ui/utils.dart';
 import 'package:flutter/material.dart';
 
 class AppStyle {

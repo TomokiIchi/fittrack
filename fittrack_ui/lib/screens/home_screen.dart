@@ -64,8 +64,7 @@ class _MyHomePageState extends State<MyHomePage> {
     setState(() {});
   }
 
-  //TODO 使ってなさそう せっかくなので権限を無効にできる機能が使えても良いかな
-  //TODO lib/screens/home_screen.dart の revokePermissions()  が使われている形跡がないのですが、必要なのでしょうか？
+  // データ同期権限をrevokeさせるメソッド。ログアウト機能実装時に使用する。
   Future<void> revokePermissions() async {
     results.clear();
     try {

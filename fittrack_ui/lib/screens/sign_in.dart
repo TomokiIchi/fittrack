@@ -460,9 +460,7 @@ class SignInButton extends StatelessWidget {
           'password': passEditingController.text,
         });
         if (response.statusCode != 201 && response.statusCode != 200) {
-          message.setMessage(
-              // TODO statusCodeではなく エラーの内容を出した方が良いと思う
-              'Request failed with status: ${response.statusCode}.');
+          message.setMessage('Request failed with status: ${response.body}.');
         } else if (response == null) {
           // ここは通らないかもしれなが念の為
           message.setMessage("入力内容を確認してください");
@@ -507,9 +505,7 @@ class SignupButton extends StatelessWidget {
           "password_confirmation": passEditingController.text
         });
         if (response.statusCode != 201 && response.statusCode != 200) {
-          message.setMessage(
-              // TODO statusCodeではなく エラーの内容を出した方が良いと思う
-              'Request failed with status: ${response.statusCode}.');
+          message.setMessage('Request failed with status: ${response.body}.');
         } else if (response == null) {
           // ここは通らないかもしれなが念の為
           message.setMessage("入力内容を確認してください");

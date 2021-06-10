@@ -466,6 +466,7 @@ class SignInButton extends StatelessWidget {
           message.setMessage("入力内容を確認してください");
         } else {
           final SharedPreferences prefs = await SharedPreferences.getInstance();
+          //SharedPreferenceのキーを定数に設定する
           prefs.setString('uid', response.headers["uid"]);
           prefs.setString('accesstoken', response.headers["access-token"]);
           prefs.setString('client', response.headers["client"]);
@@ -511,6 +512,7 @@ class SignupButton extends StatelessWidget {
           message.setMessage("入力内容を確認してください");
         } else {
           final SharedPreferences prefs = await SharedPreferences.getInstance();
+          //SharedPreferenceのキーを定数に設定する
           prefs.setString('uid', response.headers["uid"]);
           prefs.setString('accesstoken', response.headers["access-token"]);
           prefs.setString('client', response.headers["client"]);

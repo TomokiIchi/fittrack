@@ -11,7 +11,13 @@ class _MyMoodsState extends State<MyMoods> {
   // 該当する体調の顔文字の色をつけ、ユーザにフィードバックしています
   // isSelectedはその5つの顔文字のどれが選択されているかを表します
   // 一つだけtrueになり、あとがfalseになるように実装します
-  List<bool> isSelected = [true, false, false, false, false];
+  List<bool> isSelected = [
+    true, // とても気分が悪い
+    false, // 気分が悪い
+    false, // 通常通り
+    false, // 元気だ
+    false, // とても元気だ
+  ];
   @override
   Widget build(BuildContext context) {
     return Center(

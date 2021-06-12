@@ -2,7 +2,7 @@ import 'package:fittrack_ui/screens/data_screen.dart';
 import 'package:fittrack_ui/style.dart';
 import 'package:fittrack_ui/widgets/moods.dart';
 import 'package:flutter/material.dart';
-import 'package:fittrack_ui/utisl.dart';
+import 'package:fittrack_ui/utils.dart';
 import 'dart:async';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:fit_kit/fit_kit.dart';

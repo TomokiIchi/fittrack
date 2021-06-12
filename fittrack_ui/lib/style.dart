@@ -17,8 +17,11 @@ class AppStyle {
   static const nextAppointmentTitleStyle = TextStyle(
       fontSize: 18.0, fontWeight: FontWeight.w500, color: Colors.black);
 
-  static const nextAppointmentSubTitleStyle =
-      TextStyle(fontSize: 14.0, fontWeight: FontWeight.w500, color: AppColor.lightColor);
+  static const nextAppointmentSubTitleStyle = TextStyle(
+      fontSize: 14.0, fontWeight: FontWeight.w500, color: AppColor.lightColor);
+
+  static const ResultStyle = TextStyle(
+      fontSize: 14.0, fontWeight: FontWeight.w500, color: Colors.redAccent);
 
   static const appointmentMainStyle = TextStyle(
     fontSize: 16.0,

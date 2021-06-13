@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/material.dart';
+import 'package:fittrack_ui/model/user_store.dart';
 
 class WelComeScreen extends StatefulWidget {
   @override
@@ -21,13 +22,13 @@ class _WelComeScreenState extends State<WelComeScreen> {
     //初期処理としてやることは1つ
     //ログインしているか？（Local Strageのuid,access-token,clientを使ってエラーが返ってこないか？）
     //ログインしている場合→生体データ同期へ（Homeへ）遷移する
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    String expiry = prefs.getString('expiry') ?? '';
-    if (expiry.isEmpty) {
+    UserStore().prefs = await SharedPreferences.getInstance();
+    // String expiry = prefs.getString('expiry') ?? '';
+    if ((UserStore().expiry ?? '').isEmpty) {
       await _delay();
       Navigator.pushReplacementNamed(context, '/sign_in');
     } else {
-      final expiryDateMicrounixtime = int.parse(expiry) * 1000;
+      final expiryDateMicrounixtime = int.parse(UserStore().expiry) * 1000;
       if (expiryDateMicrounixtime <= now) {
         await _delay();
         Navigator.pushReplacementNamed(context, '/sign_in');

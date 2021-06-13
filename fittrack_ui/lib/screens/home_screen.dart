@@ -2,7 +2,7 @@ import 'package:fittrack_ui/screens/data_screen.dart';
 import 'package:fittrack_ui/style.dart';
 import 'package:fittrack_ui/widgets/moods.dart';
 import 'package:flutter/material.dart';
-import 'package:fittrack_ui/utisl.dart';
+import 'package:fittrack_ui/utils.dart';
 import 'dart:async';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:fit_kit/fit_kit.dart';
@@ -15,7 +15,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  // TODO この結果を表示しているところはありますかね？
   String result = '';
   Map<DataType, List<FitData>> results = Map();
   final Map<String, List> biometricdata = {};
@@ -37,7 +36,6 @@ class _MyHomePageState extends State<MyHomePage> {
     try {
       permissions = await FitKit.requestPermissions(DataType.values);
       if (!permissions) {
-        // TODO この結果を表示しているところはありますかね？
         result = 'requestPermissions: failed';
         return;
       }
@@ -105,6 +103,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     children: [
                       _buildNextAppointmentTitle(),
                       _buildNextAppointmentInfo(),
+                      _buildresultmessage(),
                     ],
                   ),
                 ),
@@ -337,5 +336,19 @@ class _MyHomePageState extends State<MyHomePage> {
         ],
       ),
     );
+  }
+
+  _buildresultmessage() {
+    return Container(
+        margin: EdgeInsets.only(top: 20, bottom: 20),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              result,
+              style: AppStyle.ResultStyle,
+            )
+          ],
+        ));
   }
 }

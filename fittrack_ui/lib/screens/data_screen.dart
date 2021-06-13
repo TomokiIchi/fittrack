@@ -1,4 +1,4 @@
-import 'package:fittrack_ui/utisl.dart';
+import 'package:fittrack_ui/utils.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
@@ -33,7 +33,12 @@ class DataPage extends StatelessWidget {
     final double windowWidth = MediaQuery.of(context).size.width;
     final double windowHeight = MediaQuery.of(context).size.height;
     DateTime now = DateTime.now();
-    final heartspot = biometricdata['DataType.HEART_RATE']?.isEmpty ?? true
+    final heartspot = biometricdata['DataType.HEART_RATE']
+                .where((element) =>
+                    element.dateTo.day == now.add(Duration(days: 0)).day)
+                .toList()
+                .isEmpty ??
+            true
         ? [FlSpot(0, 40)]
         : biometricdata['DataType.HEART_RATE']
             .where((element) =>

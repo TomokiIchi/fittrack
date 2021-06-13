@@ -1,10 +1,11 @@
-import 'package:fittrack_ui/utisl.dart';
+import 'package:fittrack_ui/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:fittrack_ui/model/user_store.dart';
+import 'dart:convert';
 
 class SignIn extends StatefulWidget {
   final SignInType signInType;
@@ -460,8 +461,9 @@ class SignInButton extends StatelessWidget {
           'email': mailEditingController.text,
           'password': passEditingController.text,
         });
+        Map<String, dynamic> body = jsonDecode(response.body);
         if (response.statusCode != 201 && response.statusCode != 200) {
-          message.setMessage('Request failed with status: ${response.body}.');
+          message.setMessage('Request failed with status: ${body["errors"]}.');
         } else if (response == null) {
           // ここは通らないかもしれなが念の為
           message.setMessage("入力内容を確認してください");
@@ -502,8 +504,9 @@ class SignupButton extends StatelessWidget {
           'password': passEditingController.text,
           "password_confirmation": passEditingController.text
         });
+        Map<String, dynamic> body = jsonDecode(response.body);
         if (response.statusCode != 201 && response.statusCode != 200) {
-          message.setMessage('Request failed with status: ${response.body}.');
+          message.setMessage('Request failed with status: ${body["errors"]}.');
         } else if (response == null) {
           // ここは通らないかもしれなが念の為
           message.setMessage("入力内容を確認してください");

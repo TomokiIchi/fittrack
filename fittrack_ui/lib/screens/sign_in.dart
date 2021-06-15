@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:fittrack_ui/model/user_store.dart';
 import 'dart:convert';
 
 class SignIn extends StatefulWidget {
@@ -467,13 +468,10 @@ class SignInButton extends StatelessWidget {
           // ここは通らないかもしれなが念の為
           message.setMessage("入力内容を確認してください");
         } else {
-          final SharedPreferences prefs = await SharedPreferences.getInstance();
-          prefs.setString('uid', response.headers["uid"]);
-          prefs.setString('accesstoken', response.headers["access-token"]);
-          prefs.setString('client', response.headers["client"]);
-          // TODO shared preferenceのキーは定数にしておいた方がいいと思います
-          prefs.setString('expiry', response.headers["expiry"]);
-
+          UserStore().uid = response.headers["uid"];
+          UserStore().accesstoken = response.headers["access-token"];
+          UserStore().client = response.headers["client"];
+          UserStore().expiry = response.headers["expiry"];
           Navigator.pushReplacementNamed(context, '/home');
         }
       } catch (e) {
@@ -513,13 +511,10 @@ class SignupButton extends StatelessWidget {
           // ここは通らないかもしれなが念の為
           message.setMessage("入力内容を確認してください");
         } else {
-          final SharedPreferences prefs = await SharedPreferences.getInstance();
-          prefs.setString('uid', response.headers["uid"]);
-          prefs.setString('accesstoken', response.headers["access-token"]);
-          prefs.setString('client', response.headers["client"]);
-          // TODO shared preferenceのキーは定数にしておいた方がいいと思います
-          prefs.setString('expiry', response.headers["expiry"]);
-
+          UserStore().uid = response.headers["uid"];
+          UserStore().accesstoken = response.headers["access-token"];
+          UserStore().client = response.headers["client"];
+          UserStore().expiry = response.headers["expiry"];
           Navigator.pushReplacementNamed(context, '/home');
         }
       } catch (e) {
